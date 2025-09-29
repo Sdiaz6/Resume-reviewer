@@ -1,42 +1,140 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff; /* pure white background */
+  margin: 0;
+  color: #ffffff; /* default text white so it stays on pink sections */
+}
+
+/* Navbar */
+.navbar-custom {
+  background-color: #ffcad4; /* pastel pink navbar */
+  padding: 20px 40px;
+}
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+.nav-links .nav-link {
+  color: #ffffff;
+  margin-left: 30px;
+  font-weight: 600;
+  font-size: 1.3rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links .nav-link:hover {
+  color: #ffd3e0; /* lighter pink on hover */
+}
+
+/* Sections */
+section {
+  width: 100%;
+  padding: 100px 40px;
+  margin: 0 auto 60px auto;
+  max-width: 1400px; /* full desktop width */
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Section Titles */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffcad4;
+  margin-bottom: 50px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Hero Section */
+.hero-section {
+  background-color: #ffffff;
+  color: #ffcad4; /* pink text on white background */
+  padding: 120px 40px;
+}
+.hero-section h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 700;
+}
+.hero-section .accent {
+  color: #ffcad4;
+}
+.hero-section p {
+  font-size: 1.8rem;
+  margin-top: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Buttons */
+.btn-custom {
+  background-color: #ffcad4;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 40px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn-custom:hover {
+  background-color: #ffd3e0;
 }
 
-.card {
-  padding: 2em;
+/* Cards (features, team, resume results) */
+.card-custom {
+  background-color: #ffffff; /* white card */
+  border: 2px solid #ffcad4; /* pink border */
+  color: #ffcad4; /* pink text */
+  padding: 40px;
+  border-radius: 15px;
+  min-height: 200px;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(255, 192, 212, 0.3);
 }
 
-.read-the-docs {
-  color: #888;
+/* Resume Rater layout */
+.resume-rater-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  justify-content: center;
+}
+.resume-rater-card {
+  background-color: #ffffff;
+  border: 2px solid #ffcad4;
+  color: #ffcad4;
+  padding: 35px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Inputs and Textarea */
+textarea, input[type="file"] {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid #ffcad4;
+  margin-bottom: 20px;
+  color: #ffcad4;
+  background: #ffffff;
+}
+
+/* Footer */
+.footer-custom {
+  background-color: #ffcad4;
+  color: #ffffff;
+  text-align: center;
+  padding: 30px 0;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
