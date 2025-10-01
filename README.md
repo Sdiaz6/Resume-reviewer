@@ -100,11 +100,3 @@ npm run dev
 ### Problem: Styling looks broken
 **Solution:** Make sure Tailwind CSS is configured and lucide-react is installed
 
----
-## 💰 Cost Estimate
-
-Using GPT-3.5-turbo:
-- ~$0.01-0.02 per resume analysis
-- $5 = approximately 250-500 analyses
-- Monitor usage at: https://platform.openai.com/account/usage
-
