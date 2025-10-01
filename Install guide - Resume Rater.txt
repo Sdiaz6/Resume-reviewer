@@ -15,8 +15,8 @@ project-root/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── FileUpload.jsx
+│   │   ├
+│   │   │ 
 │   │   │          
 │   │   │
 │   │   ├── pages/
@@ -24,9 +24,10 @@ project-root/
 │   │   │   ├── About.jsx        
 │   │   │   └── ResumeRater.jsx   
 │   │   │   └── Footer.jsx 
-│   │   ├── App.jsx               (Main app component)
-│   │   └── main.jsx              (Entry point)
-│   │
+│   │   ├── utils/ 
+         └──App.jsx               (Main app component)
+│   │    └── main.jsx              (Entry point)
+│   │    └── App.css
 │   └── package.json
 ```
 
@@ -84,4 +85,5 @@ Using GPT-3.5-turbo:
 - ~$0.01-0.02 per resume analysis
 - $5 = approximately 250-500 analyses
 - Monitor usage at: https://platform.openai.com/account/usage
+
 
