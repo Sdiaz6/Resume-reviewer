@@ -20,7 +20,7 @@ Project milestones:
 
 We are starting small and will add more features later...
 
-Install guide -
+Install guide - Resume Rater
 
 -🌸 Resume Rater - Complete Setup Guide
 
@@ -37,8 +37,8 @@ project-root/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── FileUpload.jsx
+│   │   ├
+│   │   │ 
 │   │   │          
 │   │   │
 │   │   ├── pages/
@@ -46,9 +46,10 @@ project-root/
 │   │   │   ├── About.jsx        
 │   │   │   └── ResumeRater.jsx   
 │   │   │   └── Footer.jsx 
-│   │   ├── App.jsx               (Main app component)
-│   │   └── main.jsx              (Entry point)
-│   │
+│   │   ├── utils/ 
+         └──App.jsx               (Main app component)
+│   │    └── main.jsx              (Entry point)
+│   │    └── App.css
 │   └── package.json
 ```
 
