@@ -46,10 +46,12 @@ project-root/
 │   │   │   ├── About.jsx        
 │   │   │   └── ResumeRater.jsx   
 │   │   │   └── Footer.jsx 
-│   │   ├── utils/ 
-         └──App.jsx               (Main app component)
-│   │    └── main.jsx              (Entry point)
-│   │    └── App.css
+│   │   ├── utils/
+│   │   │     └──pdfReader.js
+│   │   │  
+│   │   │──App.jsx               (Main app component)
+│   │   └── main.jsx              (Entry point)
+│   │   └── App.css
 │   └── package.json
 ```
 
