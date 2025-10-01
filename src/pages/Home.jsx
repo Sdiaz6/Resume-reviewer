@@ -63,7 +63,7 @@ const Home = () => {
             color: "rgba(255, 255, 255, 0.9)",
             textShadow: "0 2px 10px rgba(0, 0, 0, 0.2)"
           }}>
-            Trusted by 50,000+ job seekers • 95% success rate • Free analysis
+            Trusted by 50,000+ job seekers • 95% success rate • Instant analysis
           </p>
           <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link to="/resume-rater" className="btn-custom" style={{ 
@@ -71,16 +71,17 @@ const Home = () => {
               fontSize: "1.3rem",
               textDecoration: "none"
             }}>
-              Get Started Free
+              Get Started
             </Link>
-            <button className="btn-custom" style={{ 
+            <Link to="/about" className="btn-custom" style={{ 
               padding: "18px 40px", 
               fontSize: "1.3rem",
               background: "transparent",
-              border: "2px solid #ffcad4"
+              border: "2px solid #ffcad4",
+              textDecoration: "none"
             }}>
               Learn More
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -383,7 +384,7 @@ const Home = () => {
             color: "#ffcad4",
             fontWeight: "700"
           }}>
-            Analyze My Resume Now
+            Get Started Now
           </Link>
         </div>
       </section>
