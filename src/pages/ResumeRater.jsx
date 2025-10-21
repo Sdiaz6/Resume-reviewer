@@ -679,7 +679,8 @@ function ResumeRater() {
             fontWeight: "500",
             fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
             lineHeight: "1.6",
-            letterSpacing: "0.3px"
+            letterSpacing: "0.3px",
+            textShadow: "0 2px 10px rgba(0, 0, 0, 0.1)"
           }}>
             Get instant professional feedback on your resume
           </p>
