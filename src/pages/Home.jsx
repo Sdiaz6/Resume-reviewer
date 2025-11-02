@@ -1,391 +1,411 @@
+// HOME
+
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="hero-section" style={{
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)",
-        position: "relative",
-        overflow: "hidden"
+    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa" }}>
+      
+      {/* HERO SECTION - Large, impactful */}
+      <section style={{ 
+        padding: "140px 80px 100px",
+        maxWidth: "1600px",
+        margin: "0 auto",
+        display: "grid",
+        gridTemplateColumns: "1.2fr 1fr",
+        gap: "80px",
+        alignItems: "center"
       }}>
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: `
-            linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 25%, transparent 50%, rgba(255, 255, 255, 0.1) 75%, transparent 100%),
-            linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%)
-          `,
-          backgroundSize: "200px 200px, 100% 100%",
-          animation: "float 8s ease-in-out infinite"
-        }}></div>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px", position: "relative", zIndex: 1 }}>
-          <h1 style={{ 
-            fontSize: "5.2rem", 
-            marginBottom: "30px",
-            lineHeight: "1.05",
-            fontFamily: "'Montserrat', 'Playfair Display', serif",
-            fontWeight: "900",
-            letterSpacing: "-1.5px",
-            color: "#ffffff",
-            textShadow: "0 4px 20px rgba(0, 0, 0, 0.3)"
+        <div>
+          <div style={{
+            display: "inline-block",
+            backgroundColor: "#eff6ff",
+            color: "#3b82f6",
+            padding: "8px 20px",
+            borderRadius: "20px",
+            fontSize: "0.9rem",
+            fontWeight: "600",
+            marginBottom: "24px"
           }}>
-            Welcome to <span className="accent" style={{
-              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text"
-            }}>Resume Review</span>
+            ✨ AI-Powered Resume Tools
+          </div>
+          <h1 style={{ 
+            fontSize: "5rem",
+            fontWeight: "800",
+            color: "#0f172a",
+            marginBottom: "28px",
+            letterSpacing: "-2px",
+            lineHeight: "1.1"
+          }}>
+            Land Your Dream Job with
+            <span style={{ color: "#3b82f6" }}> AI-Powered</span> Resumes
           </h1>
           <p style={{ 
-            fontSize: "1.9rem", 
-            marginBottom: "20px",
-            fontWeight: "500",
-            fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-            letterSpacing: "0.3px",
-            lineHeight: "1.6",
-            color: "rgba(255, 255, 255, 0.95)",
-            textShadow: "0 2px 10px rgba(0, 0, 0, 0.2)"
+            fontSize: "1.4rem",
+            color: "#64748b",
+            marginBottom: "48px",
+            lineHeight: "1.7",
+            maxWidth: "600px"
           }}>
-            Your professional tool to improve resumes and land dream jobs
+            Create, analyze, and optimize your resume with professional templates and intelligent AI feedback
           </p>
-          <p style={{ 
-            fontSize: "1.3rem", 
-            marginBottom: "45px",
-            opacity: "0.9",
-            fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-            fontWeight: "400",
-            letterSpacing: "0.2px",
-            color: "rgba(255, 255, 255, 0.9)",
-            textShadow: "0 2px 10px rgba(0, 0, 0, 0.2)"
-          }}>
-            Trusted by 50,000+ job seekers • 95% success rate • Instant analysis
-          </p>
-          <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link to="/resume-rater" className="btn-custom" style={{ 
-              padding: "18px 40px", 
-              fontSize: "1.3rem",
-              textDecoration: "none"
-            }}>
-              Get Started
-            </Link>
-            <Link to="/about" className="btn-custom" style={{ 
-              padding: "18px 40px", 
-              fontSize: "1.3rem",
-              background: "transparent",
-              border: "2px solid #ffcad4",
-              textDecoration: "none"
-            }}>
-              Learn More
-            </Link>
+          <div style={{ display: "flex", gap: "20px" }}>
+            <button
+              onClick={() => navigate("/build-resume")}
+              style={{
+                backgroundColor: "#10b981",
+                color: "#ffffff",
+                fontSize: "1.15rem",
+                fontWeight: "600",
+                padding: "18px 40px",
+                border: "none",
+                borderRadius: "12px",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: "0 8px 20px rgba(16, 185, 129, 0.3)"
+              }}
+              onMouseOver={(e) => {
+                e.target.style.transform = "translateY(-3px)";
+                e.target.style.boxShadow = "0 12px 28px rgba(16, 185, 129, 0.4)";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = "0 8px 20px rgba(16, 185, 129, 0.3)";
+              }}
+            >
+              Build Resume
+            </button>
+            <button
+              onClick={() => navigate("/resume-rater")}
+              style={{
+                backgroundColor: "#ffffff",
+                color: "#3b82f6",
+                fontSize: "1.15rem",
+                fontWeight: "600",
+                padding: "18px 40px",
+                border: "2px solid #3b82f6",
+                borderRadius: "12px",
+                cursor: "pointer",
+                transition: "all 0.3s ease"
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = "#3b82f6";
+                e.target.style.color = "#ffffff";
+                e.target.style.transform = "translateY(-3px)";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = "#ffffff";
+                e.target.style.color = "#3b82f6";
+                e.target.style.transform = "translateY(0)";
+              }}
+            >
+              Analyze Resume
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section style={{ 
-        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.75) 100%)",
-        backdropFilter: "blur(20px)",
-        padding: "80px 40px",
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden"
-      }}>
+        
+        {/* Hero Image/Illustration */}
         <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: `
-            linear-gradient(45deg, transparent 0%, rgba(102, 126, 234, 0.05) 25%, transparent 50%, rgba(240, 147, 251, 0.05) 75%, transparent 100%)
-          `,
-          backgroundSize: "100px 100px",
-          animation: "float 10s ease-in-out infinite"
-        }}></div>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <h2 style={{ 
-            color: "#1e293b", 
-            fontSize: "2.8rem", 
-            marginBottom: "60px",
-            fontWeight: "800",
-            fontFamily: "'Montserrat', 'Playfair Display', serif",
-            letterSpacing: "-0.5px",
-            textShadow: "0 2px 10px rgba(0, 0, 0, 0.1)"
+          backgroundColor: "#ffffff",
+          borderRadius: "24px",
+          padding: "60px",
+          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.08)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            fontSize: "12rem",
+            textAlign: "center"
           }}>
-            Join Thousands of Successful Job Seekers
-          </h2>
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", 
-            gap: "40px" 
-          }}>
-            {[
-              { number: "50K+", label: "Resumes Analyzed" },
-              { number: "95%", label: "Success Rate" },
-              { number: "2.3x", label: "More Interviews" },
-              { number: "24/7", label: "AI Analysis" }
-            ].map((stat, index) => (
-              <div key={index} className="card-custom" style={{ 
-                padding: "30px 20px",
-                minHeight: "150px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center"
-              }}>
-                <div style={{ 
-                  fontSize: "3.2rem", 
-                  fontWeight: "800", 
-                  color: "#1e293b",
-                  marginBottom: "12px",
-                  fontFamily: "'Montserrat', 'Poppins', sans-serif",
-                  letterSpacing: "-0.5px"
-                }}>
-                  {stat.number}
-                </div>
-                <div style={{ 
-                  fontSize: "1.2rem", 
-                  fontWeight: "600",
-                  color: "#64748b",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  letterSpacing: "0.3px"
-                }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+            📄
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* FEATURES SECTION */}
       <section style={{ 
-        background: "#fff0f5", 
-        padding: "100px 40px" 
+        backgroundColor: "#ffffff",
+        padding: "120px 80px",
+        borderTop: "1px solid #e5e7eb"
       }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 className="section-title">Why Choose Resume Rater?</h2>
+        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "80px" }}>
+            <h2 style={{ 
+              fontSize: "3.5rem",
+              fontWeight: "800",
+              color: "#0f172a",
+              marginBottom: "20px",
+              letterSpacing: "-1px"
+            }}>
+              Everything You Need to Succeed
+            </h2>
+            <p style={{
+              fontSize: "1.3rem",
+              color: "#64748b",
+              maxWidth: "700px",
+              margin: "0 auto"
+            }}>
+              Professional tools powered by AI to help you stand out
+            </p>
+          </div>
+          
+          {/* Feature Cards */}
           <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", 
-            gap: "40px" 
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "40px"
           }}>
-            <div className="card-custom" style={{ 
-              padding: "40px 30px",
-              textAlign: "left"
+            {/* Feature 1 */}
+            <div style={{
+              backgroundColor: "#fafafa",
+              padding: "48px 36px",
+              borderRadius: "20px",
+              border: "1px solid #e5e7eb",
+              transition: "all 0.3s ease",
+              cursor: "pointer"
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-8px)";
+              e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.08)";
+              e.currentTarget.style.borderColor = "#3b82f6";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "#e5e7eb";
             }}>
-              <div style={{ 
-                fontSize: "3rem", 
-                marginBottom: "20px",
-                textAlign: "center",
-                color: "#667eea"
+              <div style={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#3b82f6",
+                borderRadius: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "28px",
+                fontSize: "2.2rem"
               }}>
                 ⚡
               </div>
-              <h3 style={{ 
-                fontSize: "1.6rem", 
-                marginBottom: "18px",
-                textAlign: "center",
-                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+              <h3 style={{
+                fontSize: "1.6rem",
                 fontWeight: "700",
-                color: "#1e293b",
-                letterSpacing: "0.3px"
+                color: "#0f172a",
+                marginBottom: "16px"
               }}>
-                Advanced Analysis Engine
+                AI-Powered Analysis
               </h3>
-              <p style={{ 
-                fontSize: "1.15rem", 
-                lineHeight: "1.7",
-                textAlign: "center",
-                fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-                fontWeight: "500",
+              <p style={{
+                fontSize: "1.1rem",
                 color: "#64748b",
-                letterSpacing: "0.2px"
+                lineHeight: "1.7"
               }}>
-                Our advanced system analyzes your resume across 6 key dimensions: content quality, 
-                formatting, keyword optimization, ATS compatibility, achievement impact, and professional tone.
+                Get instant feedback on grammar, formatting, keywords, and ATS compatibility with our advanced AI engine
               </p>
             </div>
-            
-            <div className="card-custom" style={{ 
-              padding: "40px 30px",
-              textAlign: "left"
+
+            {/* Feature 2 */}
+            <div style={{
+              backgroundColor: "#fafafa",
+              padding: "48px 36px",
+              borderRadius: "20px",
+              border: "1px solid #e5e7eb",
+              transition: "all 0.3s ease",
+              cursor: "pointer"
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-8px)";
+              e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.08)";
+              e.currentTarget.style.borderColor = "#10b981";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "#e5e7eb";
             }}>
-              <div style={{ 
-                fontSize: "3rem", 
-                marginBottom: "20px",
-                textAlign: "center",
-                color: "#667eea"
+              <div style={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#10b981",
+                borderRadius: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "28px",
+                fontSize: "2.2rem"
               }}>
-                ⚡
+                📝
               </div>
-              <h3 style={{ 
-                fontSize: "1.5rem", 
-                marginBottom: "15px",
-                textAlign: "center"
+              <h3 style={{
+                fontSize: "1.6rem",
+                fontWeight: "700",
+                color: "#0f172a",
+                marginBottom: "16px"
               }}>
-                Instant Results
+                Professional Templates
               </h3>
-              <p style={{ 
-                fontSize: "1.1rem", 
-                lineHeight: "1.6",
-                textAlign: "center"
+              <p style={{
+                fontSize: "1.1rem",
+                color: "#64748b",
+                lineHeight: "1.7"
               }}>
-                Get comprehensive feedback in under 30 seconds. No waiting, no delays - 
-                just instant, actionable insights to improve your resume immediately.
+                Choose from dozens of professionally designed templates optimized for different industries and career levels
               </p>
             </div>
-            
-            <div className="card-custom" style={{ 
-              padding: "40px 30px",
-              textAlign: "left"
+
+            {/* Feature 3 */}
+            <div style={{
+              backgroundColor: "#fafafa",
+              padding: "48px 36px",
+              borderRadius: "20px",
+              border: "1px solid #e5e7eb",
+              transition: "all 0.3s ease",
+              cursor: "pointer"
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-8px)";
+              e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.08)";
+              e.currentTarget.style.borderColor = "#f59e0b";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "#e5e7eb";
             }}>
-              <div style={{ 
-                fontSize: "3rem", 
-                marginBottom: "20px",
-                textAlign: "center",
-                color: "#667eea"
+              <div style={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#f59e0b",
+                borderRadius: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "28px",
+                fontSize: "2.2rem"
               }}>
                 🎯
               </div>
-              <h3 style={{ 
-                fontSize: "1.5rem", 
-                marginBottom: "15px",
-                textAlign: "center"
+              <h3 style={{
+                fontSize: "1.6rem",
+                fontWeight: "700",
+                color: "#0f172a",
+                marginBottom: "16px"
               }}>
-                Personalized Feedback
+                Smart Optimization
               </h3>
-              <p style={{ 
-                fontSize: "1.1rem", 
-                lineHeight: "1.6",
-                textAlign: "center"
+              <p style={{
+                fontSize: "1.1rem",
+                color: "#64748b",
+                lineHeight: "1.7"
               }}>
-                Receive tailored recommendations based on your specific resume content. 
-                Our system provides human-like feedback that's both encouraging and constructive.
+                Receive personalized suggestions to improve your resume score and increase your chances of getting interviews
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* STATS SECTION */}
       <section style={{ 
-        background: "#ffffff", 
-        padding: "100px 40px" 
+        padding: "100px 80px",
+        backgroundColor: "#fafafa"
       }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 className="section-title">How It Works</h2>
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
-            gap: "50px",
-            marginTop: "60px"
+        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "60px",
+            textAlign: "center"
           }}>
-            {[
-              { 
-                step: "1", 
-                title: "Upload Your Resume", 
-                description: "Simply drag and drop your resume file or click to browse. We support PDF, DOCX, and TXT formats.",
-                icon: "📄"
-              },
-              { 
-                step: "2", 
-                title: "System Analysis", 
-                description: "Our advanced system analyzes your resume across multiple dimensions in real-time, providing comprehensive insights.",
-                icon: "🔍"
-              },
-              { 
-                step: "3", 
-                title: "Get Results", 
-                description: "Receive detailed scores, personalized feedback, and actionable recommendations to improve your resume.",
-                icon: "📊"
-              }
-            ].map((item, index) => (
-              <div key={index} style={{ 
-                textAlign: "center",
-                position: "relative"
-              }}>
-                <div style={{ 
-                  width: "80px", 
-                  height: "80px", 
-                  background: "#ffcad4", 
-                  borderRadius: "50%", 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center",
-                  margin: "0 auto 25px",
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  color: "#ffffff"
-                }}>
-                  {item.step}
-                </div>
-                <div style={{ 
-                  fontSize: "3rem", 
-                  marginBottom: "20px" 
-                }}>
-                  {item.icon}
-                </div>
-                <h3 style={{ 
-                  color: "#667eea", 
-                  fontSize: "1.4rem", 
-                  marginBottom: "15px",
-                  fontWeight: "600"
-                }}>
-                  {item.title}
-                </h3>
-                <p style={{ 
-                  color: "#667eea", 
-                  fontSize: "1rem", 
-                  lineHeight: "1.6",
-                  maxWidth: "280px",
-                  margin: "0 auto"
-                }}>
-                  {item.description}
-                </p>
+            <div>
+              <div style={{ fontSize: "3.5rem", fontWeight: "800", color: "#3b82f6", marginBottom: "12px" }}>
+                50K+
               </div>
-            ))}
+              <p style={{ fontSize: "1.2rem", color: "#64748b", fontWeight: "500" }}>
+                Resumes Analyzed
+              </p>
+            </div>
+            <div>
+              <div style={{ fontSize: "3.5rem", fontWeight: "800", color: "#10b981", marginBottom: "12px" }}>
+                95%
+              </div>
+              <p style={{ fontSize: "1.2rem", color: "#64748b", fontWeight: "500" }}>
+                Success Rate
+              </p>
+            </div>
+            <div>
+              <div style={{ fontSize: "3.5rem", fontWeight: "800", color: "#f59e0b", marginBottom: "12px" }}>
+                30+
+              </div>
+              <p style={{ fontSize: "1.2rem", color: "#64748b", fontWeight: "500" }}>
+                Templates Available
+              </p>
+            </div>
+            <div>
+              <div style={{ fontSize: "3.5rem", fontWeight: "800", color: "#8b5cf6", marginBottom: "12px" }}>
+                24/7
+              </div>
+              <p style={{ fontSize: "1.2rem", color: "#64748b", fontWeight: "500" }}>
+                AI Support
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA SECTION */}
       <section style={{ 
-        background: "linear-gradient(135deg, #ffcad4 0%, #ffd3e0 100%)", 
-        padding: "80px 40px",
+        padding: "120px 80px",
+        backgroundColor: "#0f172a",
         textAlign: "center"
       }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <h2 style={{ 
-            color: "#ffffff", 
-            fontSize: "3rem", 
-            marginBottom: "25px",
-            fontWeight: "700"
+            fontSize: "3.5rem",
+            fontWeight: "800",
+            color: "#ffffff",
+            marginBottom: "28px",
+            letterSpacing: "-1px"
           }}>
-            Ready to Land Your Dream Job?
+            Ready to Create Your Perfect Resume?
           </h2>
           <p style={{ 
-            color: "#ffffff", 
-            fontSize: "1.3rem", 
-            marginBottom: "40px",
-            opacity: "0.9"
+            fontSize: "1.3rem",
+            color: "#94a3b8",
+            marginBottom: "48px",
+            lineHeight: "1.7"
           }}>
-            Join thousands of successful job seekers who have improved their resumes with our advanced analysis system.
+            Join thousands of job seekers who have successfully landed their dream jobs
           </p>
-          <Link to="/resume-rater" className="btn-custom" style={{ 
-            padding: "20px 50px", 
-            fontSize: "1.4rem",
-            textDecoration: "none",
-            background: "#ffffff",
-            color: "#ffcad4",
-            fontWeight: "700"
-          }}>
-            Get Started Now
-          </Link>
+          <button
+            onClick={() => navigate("/build-resume")}
+            style={{
+              backgroundColor: "#10b981",
+              color: "#ffffff",
+              fontSize: "1.2rem",
+              fontWeight: "600",
+              padding: "20px 48px",
+              border: "none",
+              borderRadius: "12px",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              boxShadow: "0 12px 28px rgba(16, 185, 129, 0.4)"
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = "translateY(-3px)";
+              e.target.style.boxShadow = "0 16px 36px rgba(16, 185, 129, 0.5)";
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 12px 28px rgba(16, 185, 129, 0.4)";
+            }}
+          >
+            Get Started Free
+          </button>
         </div>
       </section>
     </div>
