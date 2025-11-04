@@ -3,9 +3,12 @@ import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import ResumeRater from "./pages/ResumeRater";
+import BuildResume from "./pages/BuildResume";
 import Footer from "./pages/Footer";
+import Navbar from "./pages/NavBar";
 import "./App.css";
 
+/*
 function Navbar() {
   return (
     <nav className="navbar-custom">
@@ -109,17 +112,18 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+} */
 
 function App() {
   return (
     <div className="app-wrapper">
-      <Navbar />
+      <Navbar />  {/* now using your NavBar.jsx */}
       <div className="content-wrapper container py-5">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/resume-rater" element={<ResumeRater />} />
+          <Route path="/build-resume" element={<BuildResume />} /> {/* ← new route */}
         </Routes>
       </div>
       <Footer />
