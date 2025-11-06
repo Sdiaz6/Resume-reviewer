@@ -1,831 +1,273 @@
-// RESUME RATER 
+// src/pages/ResumeRater.jsx
+import React, { useEffect, useMemo, useState } from "react";
 
-import React, { useState } from "react";
 
-function ResumeRater() {
-  // ALL STATE - Keeping everything from original
-  const [file, setFile] = useState(null);
-  const [previewContent, setPreviewContent] = useState("");
+const API_BASE = "http://127.0.0.1:8000";
+
+
+export default function ResumeRater() {
+  const [file, setFile] = useState(null);           // File object (PDF/DOCX/TXT)
+  const [pdfUrl, setPdfUrl] = useState(null);       // blob URL for iframe preview
+  const [jobDescription, setJobDescription] = useState("");
   const [scoreResult, setScoreResult] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [analysisStep, setAnalysisStep] = useState(0);
-  const [dragActive, setDragActive] = useState(false);
+  const [txtPreview, setTxtPreview] = useState(""); // small preview if .txt
+  const [zoom, setZoom] = useState(1.0);            // iframe zoom
 
-  const analysisSteps = [
-    "Reading your resume...",
-    "Analyzing content structure...",
-    "Checking keyword optimization...",
-    "Evaluating formatting...",
-    "Assessing ATS compatibility...",
-    "Generating personalized feedback..."
-  ];
-
-  // ALL ORIGINAL FUNCTIONS - Keeping complete functionality
-  const simulateAnalysis = async () => {
-    for (let i = 0; i < analysisSteps.length; i++) {
-      setAnalysisStep(i);
-      await new Promise(resolve => setTimeout(resolve, 800));
-    }
-  };
-
-  const extractTextFromFile = async (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        try {
-          const content = e.target.result;
-          if (file.type === 'text/plain') {
-            resolve(content);
-          } else if (file.type === 'application/pdf') {
-            resolve("PDF content extracted - " + content.substring(0, 500));
-          } else if (file.type.includes('word') || file.name.endsWith('.docx')) {
-            resolve("DOCX content extracted - " + content.substring(0, 500));
-          } else {
-            resolve(content.toString());
-          }
-        } catch (error) {
-          reject(new Error("Failed to extract text from file"));
-        }
-      };
-      reader.onerror = () => reject(new Error("Failed to read file"));
-      reader.readAsText(file);
-    });
-  };
-
-  const analyzeResumeText = (resumeText) => {
-    let contentQuality = 70;
-    let formatStructure = 70;
-    let keywordOptimization = 70;
-    let atsCompatibility = 70;
-    let achievementImpact = 70;
-    let professionalTone = 70;
-
-    // Real analysis
-    if (/\d+%|\$\d+|\d+\+/.test(resumeText)) contentQuality += 15;
-    if (/(led|managed|developed|created|implemented)/i.test(resumeText)) achievementImpact += 15;
-    if (/(javascript|python|react|node|sql|aws|docker|git)/i.test(resumeText)) keywordOptimization += 10;
-    if (/(experience|education|skills)/i.test(resumeText)) formatStructure += 15;
-    if (/(email|phone|linkedin|github)/i.test(resumeText)) atsCompatibility += 10;
-    if (!/(awesome|cool|amazing|super|totally)/i.test(resumeText)) professionalTone += 15;
-
-    const totalScore = Math.round((contentQuality + formatStructure + keywordOptimization + atsCompatibility + achievementImpact + professionalTone) / 6);
-
-    const advice = [];
-    if (!/\d+%|\$\d+/.test(resumeText)) advice.push("Add specific metrics like 'increased sales by 25%' to demonstrate impact");
-    if (!/(led|managed|developed)/i.test(resumeText)) advice.push("Start bullet points with strong action verbs like 'Led', 'Managed', or 'Developed'");
-    if (!/(javascript|python|react)/i.test(resumeText)) advice.push("Include relevant technical skills for your target role");
-    if (!/(email|phone)/i.test(resumeText)) advice.push("Ensure contact information is clearly visible");
-
-    const strengths = [];
-    if (/\d+%|\$\d+/.test(resumeText)) strengths.push("Strong quantified achievements");
-    if (/(led|managed)/i.test(resumeText)) strengths.push("Effective action verbs");
-    if (/(javascript|python|react)/i.test(resumeText)) strengths.push("Relevant technical skills");
-
-    const improvements = [];
-    if (!/\d+%|\$\d+/.test(resumeText)) improvements.push("Add more quantifiable metrics");
-    if (!/(led|managed)/i.test(resumeText)) improvements.push("Use stronger action verbs");
-
-    return {
-      total: totalScore,
-      breakdown: {
-        "Content Quality": Math.min(100, contentQuality),
-        "Format & Structure": Math.min(100, formatStructure),
-        "Keyword Optimization": Math.min(100, keywordOptimization),
-        "ATS Compatibility": Math.min(100, atsCompatibility),
-        "Achievement Impact": Math.min(100, achievementImpact),
-        "Professional Tone": Math.min(100, professionalTone)
-      },
-      advice: advice.length > 0 ? advice : ["Good content overall - continue refining"],
-      strengths: strengths.length > 0 ? strengths : ["Professional presentation"],
-      improvements: improvements.length > 0 ? improvements : ["Continue refining for maximum impact"],
-      summary: totalScore >= 85 ? "Outstanding resume with excellent content and structure!" : 
-               totalScore >= 75 ? "Solid resume with good structure and content." : 
-               "Good foundation with room for improvement.",
-      isRealAnalysis: true
+  useEffect(() => {
+    return () => {
+      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
     };
-  };
+  }, [pdfUrl]);
 
-  const handleUploadAndScore = async () => {
-    if (!file) return;
-    setLoading(true);
-    setAnalysisStep(0);
-    
-    await simulateAnalysis();
-    
-    try {
-      const resumeText = await extractTextFromFile(file);
-      if (!resumeText || resumeText.trim().length < 50) {
-        throw new Error("Could not extract sufficient text");
-      }
-      const aiAnalysis = await analyzeResumeText(resumeText);
-      setScoreResult(aiAnalysis);
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Analysis failed: " + err.message);
-    } finally {
-      setLoading(false);
-      setAnalysisStep(0);
+  function handleFileChange(e) {
+    const f = e.target.files?.[0] || null;
+    setFile(f);
+    setScoreResult(null);
+    setTxtPreview("");
+
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
+      setPdfUrl(null);
     }
-  };
+    if (!f) return;
 
-  // Drag and drop handlers
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(e.type === "dragenter" || e.type === "dragover");
-  };
-
-  const handleDrop = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const selectedFile = e.dataTransfer.files[0];
-      setFile(selectedFile);
-      setScoreResult(null);
-      try {
-        const content = await extractTextFromFile(selectedFile);
-        setPreviewContent(content);
-      } catch (error) {
-        console.error("Error:", error);
-      }
+    // PDF → blob URL for iframe
+    if (f.type === "application/pdf" || /\.pdf$/i.test(f.name)) {
+      const url = URL.createObjectURL(f);
+      setPdfUrl(url);
     }
-  };
 
-  const getScoreColor = (score) => {
-    if (score >= 90) return "#10b981";
-    if (score >= 80) return "#3b82f6";
-    if (score >= 70) return "#f59e0b";
-    return "#ef4444";
-  };
+    // TXT → quick peek
+    if (f.type === "text/plain" || /\.txt$/i.test(f.name)) {
+      const r = new FileReader();
+      r.onload = () => setTxtPreview(String(r.result || "").slice(0, 2000));
+      r.readAsText(f);
+    }
+  }
 
-  const getScoreLabel = (score) => {
-    if (score >= 90) return "Excellent";
-    if (score >= 80) return "Very Good";
-    if (score >= 70) return "Good";
-    return "Needs Improvement";
-  };
+async function analyzeFileWithAI(f, jdText) {
+  if (!f) throw new Error("No file selected.");
+
+  const form = new FormData();
+  form.append("resume", f);                 // <-- must be 'resume'
+  form.append("jd_text", jdText ?? "");     // <-- must be 'jd_text'
+
+  const res = await fetch(`${API_BASE}/rate`, {
+    method: "POST",
+    body: form,
+  });
+
+  if (!res.ok) {
+    const msg = await res.text().catch(() => "");
+    throw new Error(`Backend error ${res.status}: ${msg || "request failed"}`);
+  }
+  return res.json(); // { total, breakdown, advice, jd_match, ... }
+}
+
+
+async function onAnalyzeClick() {
+  if (!file) {
+    alert("Upload a resume file (.pdf/.docx/.txt) first.");
+    return;
+  }
+  setLoading(true);
+  try {
+    const data = await analyzeFileWithAI(file, jobDescription);
+    setScoreResult({
+      total: data.total,
+      breakdown: data.breakdown || {},
+      improvements: data.advice || [],
+      strengths: data.strengths || [],
+      jdMatch: data.jd_match || { coveragePct: 0, missingKeywords: [], matchedKeywords: [] },
+      isRealAnalysis: true,
+    });
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Analysis failed");
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+  function getScoreLabel(score) {
+    if (score >= 85) return { label: "Excellent", color: "#16a34a" };
+    if (score >= 75) return { label: "Very Good", color: "#22c55e" };
+    if (score >= 65) return { label: "Good", color: "#f59e0b" };
+    return { label: "Needs Work", color: "#ef4444" };
+  }
+
+  const iframeStyle = useMemo(() => {
+    const baseH = 600;
+    return { transform: `scale(${zoom})`, height: `${baseH / zoom}px` };
+  }, [zoom]);
+
+  const filename =
+    file?.name
+      ? file.name
+      : "Choose a file…  (.txt, .pdf, .docx | Max 10MB)";
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", padding: "80px" }}>
-      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-        
-        {/* HEADER */}
-        <div style={{ textAlign: "center", marginBottom: "80px" }}>
-          <div style={{
-            display: "inline-block",
-            backgroundColor: "#dbeafe",
-            color: "#2563eb",
-            padding: "8px 20px",
-            borderRadius: "20px",
-            fontSize: "0.9rem",
-            fontWeight: "600",
-            marginBottom: "24px"
-          }}>
-            🤖 AI-Powered Analysis
-          </div>
-          <h1 style={{ 
-            fontSize: "4.5rem",
-            fontWeight: "800",
-            color: "#0f172a",
-            marginBottom: "24px",
-            letterSpacing: "-2px"
-          }}>
-            Resume Analyzer
-          </h1>
-          <p style={{ 
-            fontSize: "1.4rem",
-            color: "#64748b",
-            maxWidth: "800px",
-            margin: "0 auto",
-            lineHeight: "1.7"
-          }}>
-            Upload your resume for professional AI-powered feedback and optimization suggestions
+    <div className="rr-hero">
+      <div className="rr-wrap">
+        {/* Page title + subtitle */}
+        <div className="rr-hero-head">
+          <h1 className="rr-hero-title">RESUME REVIEWER</h1>
+          <p className="rr-hero-sub">
+            Upload your resume for professional AI-powered feedback and
+            optimization suggestions
           </p>
         </div>
 
-        {/* UPLOAD SECTION - 2 COLUMNS */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1.2fr 1fr",
-          gap: "40px",
-          marginBottom: "60px"
-        }}>
-          {/* LEFT: Upload Zone */}
-          <div style={{
-            backgroundColor: "#ffffff",
-            padding: "48px",
-            borderRadius: "24px",
-            border: "2px solid #e5e7eb"
-          }}>
-            <h2 style={{
-              fontSize: "2rem",
-              fontWeight: "700",
-              color: "#0f172a",
-              marginBottom: "32px",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px"
-            }}>
-              <span style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#3b82f6",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#ffffff",
-                fontSize: "1.3rem",
-                fontWeight: "800"
-              }}>1</span>
-              Upload Your Resume
-            </h2>
-
-            {/* Drag & Drop Zone */}
-            <div
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-              onClick={() => document.getElementById('fileInput').click()}
-              style={{
-                border: dragActive ? "3px dashed #3b82f6" : "3px dashed #cbd5e1",
-                borderRadius: "16px",
-                padding: "60px",
-                textAlign: "center",
-                backgroundColor: dragActive ? "#eff6ff" : "#f8fafc",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                marginBottom: "24px"
-              }}
-            >
-              <div style={{ fontSize: "4.5rem", marginBottom: "20px", color: dragActive ? "#3b82f6" : "#94a3b8" }}>
-                📄
-              </div>
-              <p style={{ 
-                fontSize: "1.3rem",
-                color: "#0f172a",
-                fontWeight: "600",
-                marginBottom: "10px"
-              }}>
-                {file ? `✓ ${file.name}` : "Drop your resume here or click to upload"}
-              </p>
-              <p style={{ 
-                fontSize: "1.05rem",
-                color: "#64748b"
-              }}>
-                Supports .txt, .pdf, .docx (Max 10MB)
-              </p>
+        {/* TOP ROW: Upload card (left) + What we analyze (right) */}
+        <div className="rr-top-grid">
+          {/* LEFT CARD */}
+          <div className="rr-card rr-upload-card">
+            <div className="rr-card-head">
+              <div className="rr-step">1</div>
+              <div className="rr-card-title">UPLOAD YOUR RESUME</div>
             </div>
 
-            <input
-              id="fileInput"
-              type="file"
-              accept=".txt,.pdf,.docx"
-              onChange={async (e) => {
-                const selectedFile = e.target.files[0];
-                if (selectedFile) {
-                  setFile(selectedFile);
-                  setScoreResult(null);
-                  try {
-                    const content = await extractTextFromFile(selectedFile);
-                    setPreviewContent(content);
-                  } catch (error) {
-                    console.error("Error:", error);
-                  }
-                }
-              }}
-              style={{ display: "none" }}
-            />
+            <label className="rr-dropzone">
+              <input
+                type="file"
+                accept=".pdf,.docx,.txt"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+              <div className="rr-file-icon">📄</div>
+              <div className="rr-file-name">{filename}</div>
+              <div className="rr-help">Supports .txt, .pdf, .docx (Max 10MB)</div>
+            </label>
 
-            {/* Action Buttons */}
-            {file && (
-              <div style={{ display: "flex", gap: "16px" }}>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowPreview(!showPreview);
-                  }}
-                  style={{
-                    flex: 1,
-                    padding: "16px",
-                    fontSize: "1.1rem",
-                    fontWeight: "600",
-                    border: "2px solid #3b82f6",
-                    backgroundColor: showPreview ? "#3b82f6" : "#ffffff",
-                    color: showPreview ? "#ffffff" : "#3b82f6",
-                    borderRadius: "12px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease"
-                  }}
-                >
-                  {showPreview ? "Hide Preview" : "👁️ Preview Resume"}
-                </button>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleUploadAndScore();
-                  }}
-                  disabled={loading}
-                  style={{
-                    flex: 1,
-                    padding: "16px",
-                    fontSize: "1.1rem",
-                    fontWeight: "600",
-                    border: "none",
-                    backgroundColor: loading ? "#94a3b8" : "#3b82f6",
-                    color: "#ffffff",
-                    borderRadius: "12px",
-                    cursor: loading ? "not-allowed" : "pointer",
-                    transition: "all 0.3s ease",
-                    boxShadow: loading ? "none" : "0 4px 12px rgba(59, 130, 246, 0.3)"
-                  }}
-                >
-                  {loading ? "⏳ Analyzing..." : "🚀 Analyze Resume"}
-                </button>
+            <div className="rr-actions">
+              <button
+                className="rr-btn rr-btn-outline"
+                onClick={() => document.querySelector(".rr-dropzone input")?.click()}
+              >
+                Upload Resume
+              </button>
+
+              <button
+                className="rr-btn rr-btn-primary"
+                onClick={onAnalyzeClick}
+                disabled={loading || !file}
+              >
+                {loading ? "Analyzing..." : "Analyze Resume"}
+              </button>
+            </div>
+
+            {/* Optional JD textarea (collapsed look like your old page) */}
+            <div className="rr-jd">
+              <div className="rr-label">Job Description (optional)</div>
+              <textarea
+                className="rr-textarea"
+                placeholder="Paste the JD to get keyword coverage and focused suggestions"
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+              />
+            </div>
+
+            {/* TXT quick peek */}
+            {txtPreview && (
+              <div className="rr-mini-card">
+                <strong>.txt preview:</strong>
+                <div className="rr-mono" style={{ marginTop: 8, maxHeight: 150, overflow: "auto" }}>
+                  {txtPreview}
+                </div>
               </div>
             )}
           </div>
 
-          {/* RIGHT: Features/Info */}
-          <div style={{
-            backgroundColor: "#ffffff",
-            padding: "48px",
-            borderRadius: "24px",
-            border: "2px solid #e5e7eb"
-          }}>
-            <h3 style={{
-              fontSize: "1.6rem",
-              fontWeight: "700",
-              color: "#0f172a",
-              marginBottom: "28px"
-            }}>
-              What We Analyze
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {[
-                { icon: "✓", text: "Content Quality", color: "#3b82f6" },
-                { icon: "✓", text: "Format & Structure", color: "#10b981" },
-                { icon: "✓", text: "Keyword Optimization", color: "#f59e0b" },
-                { icon: "✓", text: "ATS Compatibility", color: "#8b5cf6" },
-                { icon: "✓", text: "Achievement Impact", color: "#ef4444" },
-                { icon: "✓", text: "Professional Tone", color: "#06b6d4" }
-              ].map((feature, i) => (
-                <div key={i} style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "16px",
-                  padding: "16px 20px",
-                  backgroundColor: "#f8fafc",
-                  borderRadius: "12px",
-                  borderLeft: `4px solid ${feature.color}`
-                }}>
-                  <span style={{ fontSize: "1.5rem", color: feature.color }}>{feature.icon}</span>
-                  <span style={{ fontSize: "1.1rem", fontWeight: "600", color: "#0f172a" }}>{feature.text}</span>
-                </div>
-              ))}
-            </div>
+          {/* RIGHT CARD: What we analyze */}
+          <div className="rr-card rr-checklist-card">
+            <div className="rr-card-title">WHAT WE ANALYZE</div>
+            <ul className="rr-checklist">
+              <li><span className="rr-pill rr-blue">✓</span> Content Quality</li>
+              <li><span className="rr-pill rr-green">✓</span> Format & Structure</li>
+              <li><span className="rr-pill rr-amber">✓</span> Keyword Optimization</li>
+              <li><span className="rr-pill rr-violet">✓</span> ATS Compatibility</li>
+              <li><span className="rr-pill rr-red">✓</span> Achievement Impact</li>
+            </ul>
           </div>
         </div>
 
-        {/* PREVIEW SECTION */}
-        {previewContent && showPreview && (
-          <div style={{
-            backgroundColor: "#ffffff",
-            padding: "48px",
-            borderRadius: "24px",
-            marginBottom: "60px",
-            border: "2px solid #e5e7eb"
-          }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
-              <h3 style={{
-                fontSize: "1.8rem",
-                fontWeight: "700",
-                color: "#0f172a",
-                margin: 0
-              }}>
-                📄 Resume Preview
-              </h3>
-              <button
-                onClick={() => setShowPreview(false)}
-                style={{
-                  padding: "10px 24px",
-                  backgroundColor: "#f1f5f9",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  color: "#64748b",
-                  cursor: "pointer"
-                }}
-              >
-                ✕ Close
-              </button>
+        {/* PDF VIEWER (appears when a PDF is uploaded) */}
+        {pdfUrl && (
+          <div className="rr-card rr-viewer-card">
+            <div className="rr-viewer-head">
+              <div className="rr-card-title">PDF Preview</div>
+              <div className="rr-toolbar">
+                <span className="rr-chip">Zoom
+                  <input
+                    type="range"
+                    min="0.75" max="1.5" step="0.05"
+                    value={zoom}
+                    onChange={(e) => setZoom(parseFloat(e.target.value))}
+                    style={{ marginLeft: 8 }}
+                  />
+                </span>
+                <a className="rr-btn rr-btn-dark" href={pdfUrl} target="_blank" rel="noreferrer">Open PDF</a>
+                <a className="rr-btn rr-btn-accent" href={pdfUrl} download={file?.name || "resume.pdf"}>Download</a>
+              </div>
             </div>
-            <div style={{
-              backgroundColor: "#f8fafc",
-              padding: "32px",
-              borderRadius: "12px",
-              maxHeight: "500px",
-              overflowY: "auto",
-              border: "1px solid #e5e7eb"
-            }}>
-              <pre style={{
-                color: "#0f172a",
-                whiteSpace: "pre-wrap",
-                fontSize: "1rem",
-                lineHeight: "1.7",
-                margin: 0,
-                fontFamily: "monospace"
-              }}>
-                {previewContent}
-              </pre>
+            <div className="rr-iframe-wrap">
+              <iframe title="PDF Preview" src={pdfUrl} className="rr-iframe" style={iframeStyle} />
             </div>
           </div>
         )}
 
-        {/* LOADING SECTION */}
-        {loading && (
-          <div style={{
-            backgroundColor: "#ffffff",
-            padding: "60px",
-            borderRadius: "24px",
-            textAlign: "center",
-            marginBottom: "60px",
-            border: "2px solid #e5e7eb"
-          }}>
-            <div style={{ fontSize: "4rem", marginBottom: "24px", animation: "pulse 2s infinite" }}>⚙️</div>
-            <p style={{
-              fontSize: "1.5rem",
-              fontWeight: "700",
-              color: "#3b82f6",
-              marginBottom: "24px"
-            }}>
-              {analysisSteps[analysisStep]}
-            </p>
-            <div style={{
-              width: "100%",
-              maxWidth: "600px",
-              margin: "0 auto",
-              height: "12px",
-              backgroundColor: "#e5e7eb",
-              borderRadius: "6px",
-              overflow: "hidden"
-            }}>
-              <div style={{
-                width: `${((analysisStep + 1) / analysisSteps.length) * 100}%`,
-                height: "100%",
-                backgroundColor: "#3b82f6",
-                transition: "width 0.8s ease",
-                borderRadius: "6px"
-              }}></div>
-            </div>
-          </div>
-        )}
-
-        {/* RESULTS SECTION */}
+        {/* RESULTS */}
         {scoreResult && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-            
-            {/* Overall Score Card - BIG */}
-            <div style={{
-              backgroundColor: "#ffffff",
-              padding: "60px",
-              borderRadius: "24px",
-              textAlign: "center",
-              border: "2px solid #e5e7eb",
-              boxShadow: "0 8px 24px rgba(0, 0, 0, 0.06)"
-            }}>
-              <h2 style={{
-                fontSize: "2.2rem",
-                fontWeight: "700",
-                color: "#0f172a",
-                marginBottom: "32px"
-              }}>
-                Your Resume Score
-              </h2>
-              <div style={{
-                fontSize: "7rem",
-                fontWeight: "800",
-                color: getScoreColor(scoreResult.total),
-                marginBottom: "16px",
-                lineHeight: "1"
-              }}>
+          <div id="results-card" className="rr-card rr-results-card">
+            <div className="rr-score">
+              <div
+                className="rr-score-num"
+                style={{ color: getScoreLabel(scoreResult.total).color }}
+              >
                 {scoreResult.total}
               </div>
-              <div style={{
-                fontSize: "1.6rem",
-                color: "#64748b",
-                marginBottom: "24px"
-              }}>
-                out of 100
+              <div className="rr-score-badges">
+                <span
+                  className="rr-badge"
+                  style={{ color: getScoreLabel(scoreResult.total).color }}
+                >
+                  {getScoreLabel(scoreResult.total).label}
+                </span>
+                <span className="rr-badge rr-badge-ai">🤖 Real AI Analysis</span>
               </div>
-              <div style={{
-                display: "inline-block",
-                padding: "14px 36px",
-                backgroundColor: "#f8fafc",
-                borderRadius: "12px",
-                fontSize: "1.4rem",
-                fontWeight: "700",
-                color: getScoreColor(scoreResult.total),
-                border: `3px solid ${getScoreColor(scoreResult.total)}`
-              }}>
-                {getScoreLabel(scoreResult.total)}
-              </div>
-              {scoreResult.isRealAnalysis && (
-                <div style={{
-                  marginTop: "24px",
-                  display: "inline-block",
-                  padding: "10px 20px",
-                  backgroundColor: "#dbeafe",
-                  borderRadius: "20px",
-                  fontSize: "0.95rem",
-                  fontWeight: "600",
-                  color: "#2563eb"
-                }}>
-                  🤖 Real AI Analysis
-                </div>
-              )}
             </div>
 
-            {/* Summary */}
-            {scoreResult.summary && (
-              <div style={{
-                backgroundColor: "#3b82f6",
-                padding: "48px",
-                borderRadius: "24px",
-                color: "#ffffff"
-              }}>
-                <h3 style={{
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  marginBottom: "20px"
-                }}>
-                  📊 Summary
-                </h3>
-                <p style={{
-                  fontSize: "1.3rem",
-                  lineHeight: "1.8",
-                  margin: 0
-                }}>
-                  {scoreResult.summary}
-                </p>
+            {scoreResult.breakdown && (
+              <div className="rr-mini-card">
+                <h4>Breakdown</h4>
+                <ul className="rr-list">
+                  {Object.entries(scoreResult.breakdown).map(([k, v]) => (
+                    <li key={k}><strong>{k}:</strong> {v}</li>
+                  ))}
+                </ul>
               </div>
             )}
 
-            {/* Score Breakdown - GRID */}
-            <div style={{
-              backgroundColor: "#ffffff",
-              padding: "48px",
-              borderRadius: "24px",
-              border: "2px solid #e5e7eb"
-            }}>
-              <h3 style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                color: "#0f172a",
-                marginBottom: "36px"
-              }}>
-                📈 Detailed Breakdown
-              </h3>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "24px"
-              }}>
-                {Object.entries(scoreResult.breakdown).map(([category, score]) => (
-                  <div key={category} style={{
-                    backgroundColor: "#f8fafc",
-                    padding: "28px",
-                    borderRadius: "16px",
-                    border: "2px solid #e5e7eb",
-                    transition: "all 0.3s ease"
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.08)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}>
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "16px"
-                    }}>
-                      <span style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "700",
-                        color: "#0f172a"
-                      }}>
-                        {category}
-                      </span>
-                      <span style={{
-                        fontSize: "2rem",
-                        fontWeight: "800",
-                        color: getScoreColor(score)
-                      }}>
-                        {score}
-                      </span>
-                    </div>
-                    <div style={{
-                      width: "100%",
-                      height: "12px",
-                      backgroundColor: "#e5e7eb",
-                      borderRadius: "6px",
-                      overflow: "hidden"
-                    }}>
-                      <div style={{
-                        width: `${score}%`,
-                        height: "100%",
-                        backgroundColor: getScoreColor(score),
-                        transition: "width 1.2s ease",
-                        borderRadius: "6px"
-                      }}></div>
-                    </div>
+            {scoreResult.jdMatch && (
+              <div className="rr-mini-card">
+                <strong>Job Match:</strong> {scoreResult.jdMatch.coveragePct}% coverage
+                {scoreResult.jdMatch.missingKeywords?.length > 0 && (
+                  <div style={{ marginTop: 6 }}>
+                    <em>Missing:</em> {scoreResult.jdMatch.missingKeywords.slice(0, 14).join(", ")}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
+            )}
 
-            {/* Strengths & Improvements - 2 COLUMNS */}
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: "40px"
-            }}>
-              {/* Strengths */}
-              <div style={{
-                backgroundColor: "#f0fdf4",
-                padding: "48px",
-                borderRadius: "24px",
-                border: "2px solid #86efac"
-              }}>
-                <h3 style={{
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  color: "#166534",
-                  marginBottom: "28px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px"
-                }}>
-                  <span style={{ fontSize: "2.5rem" }}>✓</span>
-                  Strengths
-                </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {scoreResult.strengths.map((strength, i) => (
-                    <div key={i} style={{
-                      padding: "18px 24px",
-                      backgroundColor: "#ffffff",
-                      borderRadius: "12px",
-                      fontSize: "1.15rem",
-                      color: "#166534",
-                      fontWeight: "500",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      border: "1px solid #86efac"
-                    }}>
-                      <span style={{ fontSize: "1.4rem" }}>✓</span>
-                      {strength}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Improvements */}
-              <div style={{
-                backgroundColor: "#fef2f2",
-                padding: "48px",
-                borderRadius: "24px",
-                border: "2px solid #fca5a5"
-              }}>
-                <h3 style={{
-                  fontSize: "2rem",
-                  fontWeight: "700",
-                  color: "#991b1b",
-                  marginBottom: "28px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px"
-                }}>
-                  <span style={{ fontSize: "2.5rem" }}>→</span>
-                  Areas to Improve
-                </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {scoreResult.improvements.map((improvement, i) => (
-                    <div key={i} style={{
-                      padding: "18px 24px",
-                      backgroundColor: "#ffffff",
-                      borderRadius: "12px",
-                      fontSize: "1.15rem",
-                      color: "#991b1b",
-                      fontWeight: "500",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      border: "1px solid #fca5a5"
-                    }}>
-                      <span style={{ fontSize: "1.4rem" }}>→</span>
-                      {improvement}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Recommendations */}
-            <div style={{
-              backgroundColor: "#ffffff",
-              padding: "48px",
-              borderRadius: "24px",
-              border: "2px solid #e5e7eb"
-            }}>
-              <h3 style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                color: "#0f172a",
-                marginBottom: "32px"
-              }}>
-                💡 Personalized Recommendations
-              </h3>
-              {scoreResult.advice.map((advice, i) => (
-                <div key={i} style={{
-                  backgroundColor: "#f8fafc",
-                  padding: "24px 28px",
-                  borderRadius: "16px",
-                  marginBottom: "16px",
-                  border: "2px solid #e5e7eb",
-                  display: "flex",
-                  gap: "20px",
-                  alignItems: "start"
-                }}>
-                  <span style={{
-                    width: "36px",
-                    height: "36px",
-                    backgroundColor: "#3b82f6",
-                    borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#ffffff",
-                    fontSize: "1.2rem",
-                    fontWeight: "800",
-                    flexShrink: 0
-                  }}>
-                    {i + 1}
-                  </span>
-                  <p style={{
-                    fontSize: "1.15rem",
-                    color: "#0f172a",
-                    margin: 0,
-                    lineHeight: "1.7",
-                    fontWeight: "500"
-                  }}>
-                    {advice}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Try Again Button */}
-            <div style={{ textAlign: "center", paddingTop: "20px" }}>
-              <button
-                onClick={() => {
-                  setScoreResult(null);
-                  setFile(null);
-                  setPreviewContent("");
-                  setShowPreview(false);
-                }}
-                style={{
-                  padding: "18px 48px",
-                  backgroundColor: "#3b82f6",
-                  color: "#ffffff",
-                  fontSize: "1.2rem",
-                  fontWeight: "600",
-                  border: "none",
-                  borderRadius: "12px",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)"
-                }}
-                onMouseOver={(e) => {
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 16px rgba(59, 130, 246, 0.4)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 12px rgba(59, 130, 246, 0.3)";
-                }}
-              >
-                🔄 Analyze Another Resume
-              </button>
+            <div className="rr-mini-card">
+              <h4>Improvements</h4>
+              <ul className="rr-list">
+                {(scoreResult.improvements || []).length
+                  ? scoreResult.improvements.map((s, i) => <li key={i}>{s}</li>)
+                  : <li>Add metrics (%/$/#), clarify sections, and align keywords to the job.</li>}
+              </ul>
             </div>
           </div>
         )}
@@ -833,5 +275,3 @@ function ResumeRater() {
     </div>
   );
 }
-
-export default ResumeRater;
