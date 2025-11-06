@@ -120,9 +120,8 @@ async function onAnalyzeClick() {
           </p>
         </div>
 
-        {/* TOP ROW: Upload card (left) + What we analyze (right) */}
+        
         <div className="rr-top-grid">
-          {/* LEFT CARD */}
           <div className="rr-card rr-upload-card">
             <div className="rr-card-head">
               <div className="rr-step">1</div>
@@ -158,7 +157,6 @@ async function onAnalyzeClick() {
               </button>
             </div>
 
-            {/* Optional JD textarea (collapsed look like your old page) */}
             <div className="rr-jd">
               <div className="rr-label">Job Description (optional)</div>
               <textarea
@@ -169,7 +167,7 @@ async function onAnalyzeClick() {
               />
             </div>
 
-            {/* TXT quick peek */}
+        
             {txtPreview && (
               <div className="rr-mini-card">
                 <strong>.txt preview:</strong>
@@ -180,7 +178,7 @@ async function onAnalyzeClick() {
             )}
           </div>
 
-          {/* RIGHT CARD: What we analyze */}
+          
           <div className="rr-card rr-checklist-card">
             <div className="rr-card-title">WHAT WE ANALYZE</div>
             <ul className="rr-checklist">
@@ -192,8 +190,7 @@ async function onAnalyzeClick() {
             </ul>
           </div>
         </div>
-
-        {/* PDF VIEWER (appears when a PDF is uploaded) */}
+ 
         {pdfUrl && (
           <div className="rr-card rr-viewer-card">
             <div className="rr-viewer-head">
@@ -218,7 +215,7 @@ async function onAnalyzeClick() {
           </div>
         )}
 
-        {/* RESULTS */}
+        
         {scoreResult && (
           <div id="results-card" className="rr-card rr-results-card">
             <div className="rr-score">

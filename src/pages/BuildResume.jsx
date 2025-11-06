@@ -34,7 +34,7 @@ export default function BuildResume() {
 
   const resumeData = { basicInfo, summary, experience, education, skills };
 
-  // ---- Autosave to localStorage ----
+  //save
   useEffect(() => {
     try {
       const saved = localStorage.getItem("resumeFormData");
@@ -108,12 +108,12 @@ export default function BuildResume() {
     return <ClassicTemplate {...props} />;
   };
 
-  // ---- Export helpers ----
+  //export
   async function downloadPDF() {
     const node = document.getElementById("resume-preview");
     if (!node) return;
 
-    // Increase scale for sharper PDF
+    
     const canvas = await html2canvas(node, {
       scale: 2,
       useCORS: true,
@@ -174,7 +174,7 @@ export default function BuildResume() {
           </p>
         </header>
 
-        {/* template selector */}
+        
         <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 28 }}>
           {TEMPLATES.map((t) => (
             <button
@@ -201,7 +201,7 @@ export default function BuildResume() {
           ))}
         </div>
 
-        {/* main grid */}
+        
         <div
           style={{
             display: "grid",
@@ -210,10 +210,9 @@ export default function BuildResume() {
             alignItems: "start"
           }}
         >
-          {/* left: FORM */}
+          
           {!showPreviewOnly && (
             <section style={{ background: "#fff", padding: 28, borderRadius: 16, border: "1px solid #e6e9ef" }}>
-              {/* Basic */}
               <h3 style={{ marginTop: 0 }}>Personal Info</h3>
               {["name", "email", "phone", "linkedin", "github"].map((field) => (
                 <input
@@ -234,7 +233,6 @@ export default function BuildResume() {
                 style={{ width: "100%", minHeight: 80, padding: 10, borderRadius: 8, border: "1px solid #d1d5db", resize: "vertical" }}
               />
 
-              {/* Experience */}
               <h3 style={{ marginTop: 18 }}>Experience</h3>
               {experience.map((exp, i) => (
                 <div key={i} style={{ padding: 12, borderRadius: 10, background: "#f8fafc", border: "1px solid #e6eef9", marginBottom: 12 }}>
@@ -296,7 +294,6 @@ export default function BuildResume() {
                 + Add Experience
               </button>
 
-              {/* Education */}
               <h3 style={{ marginTop: 18 }}>Education</h3>
               {education.map((edu, i) => (
                 <div key={i} style={{ padding: 12, borderRadius: 10, background: "#f8fafc", border: "1px solid #e6eef9", marginBottom: 12 }}>
@@ -352,7 +349,6 @@ export default function BuildResume() {
                 + Add Education
               </button>
 
-              {/* Skills */}
               <h3 style={{ marginTop: 18 }}>Skills</h3>
               {skills.map((s, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
@@ -387,7 +383,6 @@ export default function BuildResume() {
             </section>
           )}
 
-          {/* right: PREVIEW (selected template) */}
           <aside
             style={{
               background: "#fff",
@@ -431,7 +426,6 @@ export default function BuildResume() {
               </div>
             </div>
 
-            {/* actual template rendering */}
             {previewVisible ? (
               <div id="resume-preview">
                 {renderTemplate()}
@@ -440,7 +434,6 @@ export default function BuildResume() {
               <div style={{ color: "#64748b" }}>Preview hidden</div>
             )}
 
-            {/* export buttons */}
             <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
               <button
                 onClick={downloadPDF}
