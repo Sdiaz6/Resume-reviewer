@@ -34,7 +34,7 @@ export default function BuildResume() {
 
   const resumeData = { basicInfo, summary, experience, education, skills };
 
-  //save
+ 
   useEffect(() => {
     try {
       const saved = localStorage.getItem("resumeFormData");
@@ -60,7 +60,7 @@ export default function BuildResume() {
     }
   }, [basicInfo, summary, experience, education, skills]);
 
-  // handlers
+
   const handleBasicChange = (e) =>
     setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });
 
@@ -100,7 +100,7 @@ export default function BuildResume() {
   const addSkill = () => setSkills([...skills, ""]);
   const removeSkill = (i) => setSkills(skills.filter((_, idx) => idx !== i));
 
-  // template rendering
+
   const renderTemplate = () => {
     const props = { ...resumeData };
     if (selectedTemplate === "modern") return <ModernTemplate {...props} />;
@@ -108,12 +108,60 @@ export default function BuildResume() {
     return <ClassicTemplate {...props} />;
   };
 
-  //export
+
+  function resumeToPlainText({ basicInfo, summary, experience, education, skills }) {
+    const header = [
+      (basicInfo?.name || "").trim(),
+      [basicInfo?.email, basicInfo?.phone, basicInfo?.linkedin, basicInfo?.github]
+        .filter(Boolean)
+        .join(" • ")
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const sum = summary ? `\nSUMMARY\n${summary.trim()}\n` : "";
+
+    const exp = (experience || [])
+      .map((e) => {
+        const line1 = `${e.role || "Role"} — ${e.company || "Company"} ${
+          e.start ? `(${e.start}${e.end ? "–" + e.end : ""})` : ""
+        }`;
+        const desc = (e.description || "").trim();
+        return `• ${line1}\n  ${desc}`;
+      })
+      .join("\n");
+
+    const edu = (education || [])
+      .map((e) =>
+        `• ${e.degree || "Degree"} — ${e.school || "School"} ${
+          e.start ? `(${e.start}${e.end ? "–" + e.end : ""})` : ""
+        }`
+      )
+      .join("\n");
+
+    const skl = (skills || []).filter(Boolean).join(", ");
+
+    return [
+      header,
+      sum,
+      "EXPERIENCE",
+      exp || "• (add experience)",
+      "",
+      "EDUCATION",
+      edu || "• (add education)",
+      "",
+      "SKILLS",
+      skl || "(add skills)"
+    ]
+      .join("\n")
+      .trim();
+  }
+
+ //option to download pdf
   async function downloadPDF() {
     const node = document.getElementById("resume-preview");
     if (!node) return;
 
-    
     const canvas = await html2canvas(node, {
       scale: 2,
       useCORS: true,
@@ -129,6 +177,19 @@ export default function BuildResume() {
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
     pdf.save("MyResume.pdf");
   }
+
+//txt file for AI analysis because pdf causes backend to throw a tantrum
+  function downloadTXT() {
+    const text = resumeToPlainText(resumeData);
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "MyResume_forAnalysis.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
 
   function downloadJSON() {
     const payload = { basicInfo, summary, experience, education, skills };
@@ -174,7 +235,7 @@ export default function BuildResume() {
           </p>
         </header>
 
-        
+
         <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 28 }}>
           {TEMPLATES.map((t) => (
             <button
@@ -201,7 +262,7 @@ export default function BuildResume() {
           ))}
         </div>
 
-        
+
         <div
           style={{
             display: "grid",
@@ -210,7 +271,6 @@ export default function BuildResume() {
             alignItems: "start"
           }}
         >
-          
           {!showPreviewOnly && (
             <section style={{ background: "#fff", padding: 28, borderRadius: 16, border: "1px solid #e6e9ef" }}>
               <h3 style={{ marginTop: 0 }}>Personal Info</h3>
@@ -409,9 +469,7 @@ export default function BuildResume() {
                   {previewVisible ? "Hide" : "Show"}
                 </button>
                 <button
-                  onClick={() => {
-                    setShowPreviewOnly(false);
-                  }}
+                  onClick={() => setShowPreviewOnly(false)}
                   style={{
                     padding: "8px 12px",
                     borderRadius: 8,
@@ -434,7 +492,7 @@ export default function BuildResume() {
               <div style={{ color: "#64748b" }}>Preview hidden</div>
             )}
 
-            <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
               <button
                 onClick={downloadPDF}
                 style={{
@@ -447,8 +505,24 @@ export default function BuildResume() {
                   fontWeight: 700
                 }}
               >
-                💾 Save as PDF
+                💾 Save PDF
               </button>
+
+              <button
+                onClick={downloadTXT}
+                style={{
+                  padding: "10px 14px",
+                  borderRadius: 8,
+                  background: "#10b981",
+                  color: "#fff",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: 700
+                }}
+              >
+                📝 Download .TXT for Analysis
+              </button>
+
               <button
                 onClick={downloadJSON}
                 style={{
@@ -460,8 +534,9 @@ export default function BuildResume() {
                   fontWeight: 600
                 }}
               >
-                ⬇️ Export JSON
+                
               </button>
+
               <button
                 onClick={clearForm}
                 style={{
@@ -473,8 +548,13 @@ export default function BuildResume() {
                   fontWeight: 600
                 }}
               >
-                🧹 Clear
+                
               </button>
+            </div>
+
+            <div style={{ marginTop: 10, color: "#64748b", fontSize: 13 }}>
+              Tip: Upload the <strong>“.TXT for Analysis”</strong> file on the Resume Reviewer page
+              for the best AI results. The PDF is great for sharing/printing.
             </div>
           </aside>
         </div>
