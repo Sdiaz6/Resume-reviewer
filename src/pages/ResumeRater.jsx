@@ -1,8 +1,24 @@
 // RESUME RATER 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function ResumeRater() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const getPadding = () => {
+    if (windowWidth < 768) return "0 16px";
+    if (windowWidth < 1024) return "0 24px";
+    if (windowWidth < 1440) return "0 32px";
+    return "0 40px";
+  };
   // ALL STATE - Keeping everything from original
   const [file, setFile] = useState(null);
   const [previewContent, setPreviewContent] = useState("");
@@ -44,7 +60,7 @@ function ResumeRater() {
           } else {
             resolve(content.toString());
           }
-        } catch (error) {
+        } catch {
           reject(new Error("Failed to extract text from file"));
         }
       };
@@ -169,8 +185,8 @@ function ResumeRater() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", padding: "80px" }}>
-      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", padding: windowWidth < 768 ? "60px 0" : "80px 0", width: "100vw", maxWidth: "100vw", overflowX: "hidden" }}>
+      <div style={{ maxWidth: "100%", width: "100%", padding: getPadding(), margin: "0 auto", boxSizing: "border-box" }}>
         
         {/* HEADER */}
         <div style={{ textAlign: "center", marginBottom: "80px" }}>

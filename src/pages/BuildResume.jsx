@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import ClassicTemplate from "./templates/ClassicTemplate";
-import ModernTemplate from "./templates/ModernTemplate";
-import PremiumTemplate from "./templates/PremiumTemplate";
+import React, { useState, useEffect } from "react";
+import ClassicTemplate from "./Templates/ClassicTemplate";
+import ModernTemplate from "./Templates/ModernTemplate";
+import PremiumTemplate from "./Templates/PremiumTemplate";
 
 
 const TEMPLATES = [
@@ -11,6 +11,22 @@ const TEMPLATES = [
 ];
 
 export default function BuildResume() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const getPadding = () => {
+    if (windowWidth < 768) return "0 16px";
+    if (windowWidth < 1024) return "0 24px";
+    if (windowWidth < 1440) return "0 32px";
+    return "0 40px";
+  };
   // form state
   const [basicInfo, setBasicInfo] = useState({
     name: "",
@@ -73,8 +89,8 @@ export default function BuildResume() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", padding: 48 }}>
-      <div style={{ maxWidth: 1600, margin: "0 auto" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", padding: windowWidth < 768 ? "32px 0" : "48px 0", width: "100vw", maxWidth: "100vw", overflowX: "hidden" }}>
+      <div style={{ maxWidth: "100%", width: "100%", padding: getPadding(), margin: "0 auto", boxSizing: "border-box" }}>
         <header style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ display: "inline-block", background: "#eef2ff", color: "#1e40af", padding: "6px 16px", borderRadius: 20, marginBottom: 10 }}>
             ✨ Resume Builder
@@ -116,9 +132,10 @@ export default function BuildResume() {
         {/* main grid */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: showPreviewOnly ? "1fr" : "1.2fr 1fr",
-          gap: 32,
-          alignItems: "start"
+          gridTemplateColumns: showPreviewOnly ? "1fr" : (windowWidth < 1024 ? "1fr" : "1.2fr 1fr"),
+          gap: windowWidth < 768 ? "24px" : "32px",
+          alignItems: "start",
+          width: "100%"
         }}>
           {/* left: FORM */}
           {!showPreviewOnly && (

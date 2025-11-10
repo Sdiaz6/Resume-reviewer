@@ -10,10 +10,9 @@ body {
 
 #root {
   min-height: 100vh;
-  min-width: none;
-  display: grid;
-  place-items: center;   
-  padding: 24px;         
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 

@@ -7,12 +7,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#fafafa", width: "100%" }}>
       
       {/* HERO SECTION - Large, impactful */}
       <section style={{ 
         padding: "140px 80px 100px",
-        maxWidth: "1600px",
+        width: "100%",
+        maxWidth: "100%",
         margin: "0 auto",
         display: "grid",
         gridTemplateColumns: "1.2fr 1fr",
@@ -132,7 +133,7 @@ const Home = () => {
         padding: "120px 80px",
         borderTop: "1px solid #e5e7eb"
       }}>
-        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "100%", width: "100%", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "80px" }}>
             <h2 style={{ 
               fontSize: "3.5rem",
@@ -314,7 +315,7 @@ const Home = () => {
         padding: "100px 80px",
         backgroundColor: "#fafafa"
       }}>
-        <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "100%", width: "100%", margin: "0 auto" }}>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
