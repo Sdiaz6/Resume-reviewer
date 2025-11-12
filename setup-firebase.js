@@ -5,9 +5,13 @@
  * This script helps you set up Firebase configuration interactively
  */
 
-const readline = require('readline');
-const fs = require('fs');
-const path = require('path');
+import readline from 'readline';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const rl = readline.createInterface({
   input: process.stdin,

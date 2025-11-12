@@ -1,39 +1,42 @@
 import React, { useEffect, useRef } from 'react';
+import CompanyLogo from './CompanyLogo';
 
 const CompaniesShowcase = () => {
   const containerRef = useRef(null);
 
   const companies = [
-    { name: 'Google', logo: '🔵', color: '#4285F4' },
-    { name: 'Microsoft', logo: '🟦', color: '#00A4EF' },
-    { name: 'Apple', logo: '🍎', color: '#000000' },
-    { name: 'Meta', logo: '📘', color: '#1877F2' },
-    { name: 'Amazon', logo: '📦', color: '#FF9900' },
-    { name: 'Netflix', logo: '🎬', color: '#E50914' },
-    { name: 'Adobe', logo: '🎨', color: '#FF0000' },
-    { name: 'Stripe', logo: '💳', color: '#635BFF' },
-    { name: 'Coinbase', logo: '₿', color: '#1652F0' },
-    { name: 'DoorDash', logo: '🚗', color: '#FF3000' },
-    { name: 'Slack', logo: '💬', color: '#4A154B' },
-    { name: 'Airbnb', logo: '🏠', color: '#FF5A5F' },
-    { name: 'Uber', logo: '🚕', color: '#000000' },
-    { name: 'Tesla', logo: '⚡', color: '#E31937' },
-    { name: 'Spotify', logo: '🎵', color: '#1DB954' },
-    { name: 'Twitter', logo: '🐦', color: '#1DA1F2' },
-    { name: 'LinkedIn', logo: '💼', color: '#0077B5' },
-    { name: 'GitHub', logo: '🐙', color: '#181717' },
-    { name: 'Figma', logo: '🎨', color: '#F24E1E' },
-    { name: 'Reddit', logo: '🤖', color: '#FF4500' },
-    { name: 'Discord', logo: '💬', color: '#5865F2' },
-    { name: 'Zoom', logo: '📹', color: '#2D8CFF' },
-    { name: 'Salesforce', logo: '☁️', color: '#00A1E0' },
-    { name: 'Oracle', logo: '🗄️', color: '#F80000' },
-    { name: 'IBM', logo: '💻', color: '#006699' },
-    { name: 'Intel', logo: '🔵', color: '#0071C5' },
-    { name: 'NVIDIA', logo: '🎮', color: '#76B900' },
-    { name: 'PayPal', logo: '💸', color: '#003087' },
-    { name: 'Shopify', logo: '🛒', color: '#96BF48' },
-    { name: 'Square', logo: '⬜', color: '#3E4348' }
+    { name: 'Google', domain: 'google.com', color: '#4285F4' },
+    { name: 'Microsoft', domain: 'microsoft.com', color: '#00A4EF' },
+    { name: 'Apple', domain: 'apple.com', color: '#000000' },
+    { name: 'Meta', domain: 'meta.com', color: '#1877F2' },
+    { name: 'Amazon', domain: 'amazon.com', color: '#FF9900' },
+    { name: 'Uber', domain: 'uber.com', color: '#000000' },
+    { name: 'Bloomberg', domain: 'bloomberg.com', color: '#000000' },
+    { name: 'IBM', domain: 'ibm.com', color: '#006699' },
+    { name: 'Wells Fargo', domain: 'wellsfargo.com', color: '#D71E2B' },
+    { name: 'Netflix', domain: 'netflix.com', color: '#E50914' },
+    { name: 'Adobe', domain: 'adobe.com', color: '#FF0000' },
+    { name: 'Stripe', domain: 'stripe.com', color: '#635BFF' },
+    { name: 'Coinbase', domain: 'coinbase.com', color: '#1652F0' },
+    { name: 'DoorDash', domain: 'doordash.com', color: '#FF3000' },
+    { name: 'Slack', domain: 'slack.com', color: '#4A154B' },
+    { name: 'Airbnb', domain: 'airbnb.com', color: '#FF5A5F' },
+    { name: 'Tesla', domain: 'tesla.com', color: '#E31937' },
+    { name: 'Spotify', domain: 'spotify.com', color: '#1DB954' },
+    { name: 'Twitter', domain: 'twitter.com', color: '#1DA1F2' },
+    { name: 'LinkedIn', domain: 'linkedin.com', color: '#0077B5' },
+    { name: 'GitHub', domain: 'github.com', color: '#181717' },
+    { name: 'Figma', domain: 'figma.com', color: '#F24E1E' },
+    { name: 'Reddit', domain: 'reddit.com', color: '#FF4500' },
+    { name: 'Discord', domain: 'discord.com', color: '#5865F2' },
+    { name: 'Zoom', domain: 'zoom.us', color: '#2D8CFF' },
+    { name: 'Salesforce', domain: 'salesforce.com', color: '#00A1E0' },
+    { name: 'Oracle', domain: 'oracle.com', color: '#F80000' },
+    { name: 'Intel', domain: 'intel.com', color: '#0071C5' },
+    { name: 'NVIDIA', domain: 'nvidia.com', color: '#76B900' },
+    { name: 'PayPal', domain: 'paypal.com', color: '#003087' },
+    { name: 'Shopify', domain: 'shopify.com', color: '#96BF48' },
+    { name: 'Square', domain: 'squareup.com', color: '#3E4348' }
   ];
 
   useEffect(() => {
@@ -147,13 +150,7 @@ const CompaniesShowcase = () => {
                   e.currentTarget.style.borderColor = '#e5e7eb';
                 }}
               >
-                <div style={{
-                  fontSize: '2.5rem',
-                  marginBottom: '8px',
-                  filter: 'grayscale(0%)'
-                }}>
-                  {company.logo}
-                </div>
+                <CompanyLogo company={company} />
                 <div style={{
                   fontSize: '0.875rem',
                   fontWeight: '600',
@@ -237,9 +234,7 @@ const CompaniesShowcase = () => {
               e.currentTarget.style.borderColor = '#e5e7eb';
             }}
           >
-            <div style={{ fontSize: '2rem', marginBottom: '8px' }}>
-              {company.logo}
-            </div>
+            <CompanyLogo company={company} />
             <div style={{
               fontSize: '0.75rem',
               fontWeight: '600',
