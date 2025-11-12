@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { blogArticles } from '../data/blogArticles';
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -15,108 +16,6 @@ const Blog = () => {
   }, []);
 
   const categories = ['All', 'Career Tips', 'Resume Advice', 'Interview Prep', 'Remote Work', 'AI & Tech'];
-
-  const blogArticles = [
-    {
-      id: 1,
-      title: 'How to Land a High-Paying Remote Job',
-      description: 'Learn the top strategies for landing a high-paying remote job that you actually love.',
-      image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=400&fit=crop',
-      date: 'February 17, 2025',
-      readTime: '7 min read',
-      category: 'Remote Work',
-      featured: true,
-      content: 'Full article content here...'
-    },
-    {
-      id: 2,
-      title: 'How to Land Your Dream Job: A Step-by-Step Guide for Career Changers',
-      description: 'Complete guide for professionals looking to transition into a new career field.',
-      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop',
-      date: 'February 6, 2025',
-      readTime: '7 min read',
-      category: 'Career Tips',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 3,
-      title: 'Getting Started with ResumePro',
-      description: 'Your complete guide to using ResumePro to create professional resumes and land interviews.',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
-      date: 'February 4, 2025',
-      readTime: '2 min read',
-      category: 'Career Tips',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 4,
-      title: 'AI in Job Hunting: Optimize Your Applications and Get Noticed',
-      description: 'Discover how AI tools can help you optimize your resume and stand out to recruiters.',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=400&fit=crop',
-      date: 'February 15, 2025',
-      readTime: '9 min read',
-      category: 'AI & Tech',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 5,
-      title: '10 Resume Mistakes That Are Costing You Interviews',
-      description: 'Common resume errors that automatically disqualify candidates and how to fix them.',
-      image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop',
-      date: 'February 12, 2025',
-      readTime: '5 min read',
-      category: 'Resume Advice',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 6,
-      title: 'Ace Your Next Interview: The Ultimate Preparation Guide',
-      description: 'Master the art of interviewing with proven strategies and practice techniques.',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
-      date: 'February 10, 2025',
-      readTime: '8 min read',
-      category: 'Interview Prep',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 7,
-      title: 'ATS Optimization: Make Your Resume Pass Every System',
-      description: 'Learn how to format and optimize your resume for Applicant Tracking Systems.',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
-      date: 'February 8, 2025',
-      readTime: '6 min read',
-      category: 'Resume Advice',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 8,
-      title: 'Remote Work Success: Building Your Home Office',
-      description: 'Create a productive workspace that helps you excel in your remote career.',
-      image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop',
-      date: 'February 5, 2025',
-      readTime: '4 min read',
-      category: 'Remote Work',
-      featured: false,
-      content: 'Full article content here...'
-    },
-    {
-      id: 9,
-      title: 'Networking Strategies That Actually Work',
-      description: 'Build meaningful professional connections that lead to job opportunities.',
-      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop',
-      date: 'February 3, 2025',
-      readTime: '5 min read',
-      category: 'Career Tips',
-      featured: false,
-      content: 'Full article content here...'
-    }
-  ];
 
   const featuredArticle = blogArticles.find(article => article.featured);
   const regularArticles = blogArticles.filter(article => !article.featured);

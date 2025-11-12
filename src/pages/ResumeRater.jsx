@@ -105,12 +105,12 @@ function ResumeRater() {
     return {
       total: totalScore,
       breakdown: {
-        "Content Quality": Math.min(100, contentQuality),
-        "Format & Structure": Math.min(100, formatStructure),
-        "Keyword Optimization": Math.min(100, keywordOptimization),
-        "ATS Compatibility": Math.min(100, atsCompatibility),
-        "Achievement Impact": Math.min(100, achievementImpact),
-        "Professional Tone": Math.min(100, professionalTone)
+      "Content Quality": Math.min(100, contentQuality),
+      "Format & Structure": Math.min(100, formatStructure),
+      "Keyword Optimization": Math.min(100, keywordOptimization),
+      "ATS Compatibility": Math.min(100, atsCompatibility),
+      "Achievement Impact": Math.min(100, achievementImpact),
+      "Professional Tone": Math.min(100, professionalTone)
       },
       advice: advice.length > 0 ? advice : ["Good content overall - continue refining"],
       strengths: strengths.length > 0 ? strengths : ["Professional presentation"],
@@ -190,18 +190,18 @@ function ResumeRater() {
         
         {/* HEADER */}
         <div style={{ textAlign: "center", marginBottom: "80px" }}>
-          <div style={{
+          <div style={{ 
             display: "inline-block",
             backgroundColor: "#dbeafe",
             color: "#2563eb",
             padding: "8px 20px",
-            borderRadius: "20px",
+              borderRadius: "20px",
             fontSize: "0.9rem",
             fontWeight: "600",
             marginBottom: "24px"
           }}>
             🤖 AI-Powered Analysis
-          </div>
+            </div>
           <h1 style={{ 
             fontSize: "4.5rem",
             fontWeight: "800",
@@ -213,7 +213,7 @@ function ResumeRater() {
           </h1>
           <p style={{ 
             fontSize: "1.4rem",
-            color: "#64748b",
+            color: "#64748b", 
             maxWidth: "800px",
             margin: "0 auto",
             lineHeight: "1.7"
@@ -223,7 +223,7 @@ function ResumeRater() {
         </div>
 
         {/* UPLOAD SECTION - 2 COLUMNS */}
-        <div style={{
+          <div style={{ 
           display: "grid",
           gridTemplateColumns: "1.2fr 1fr",
           gap: "40px",
@@ -241,91 +241,91 @@ function ResumeRater() {
               fontWeight: "700",
               color: "#0f172a",
               marginBottom: "32px",
-              display: "flex",
-              alignItems: "center",
+            display: "flex", 
+            alignItems: "center", 
               gap: "12px"
-            }}>
+          }}>
               <span style={{
-                width: "40px",
-                height: "40px",
+              width: "40px",
+              height: "40px",
                 backgroundColor: "#3b82f6",
                 borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#ffffff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#ffffff",
                 fontSize: "1.3rem",
                 fontWeight: "800"
               }}>1</span>
               Upload Your Resume
             </h2>
-
+          
             {/* Drag & Drop Zone */}
-            <div
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
+          <div
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
               onClick={() => document.getElementById('fileInput').click()}
-              style={{
+            style={{
                 border: dragActive ? "3px dashed #3b82f6" : "3px dashed #cbd5e1",
                 borderRadius: "16px",
                 padding: "60px",
-                textAlign: "center",
+              textAlign: "center",
                 backgroundColor: dragActive ? "#eff6ff" : "#f8fafc",
-                cursor: "pointer",
+              cursor: "pointer",
                 transition: "all 0.3s ease",
                 marginBottom: "24px"
-              }}
-            >
+            }}
+          >
               <div style={{ fontSize: "4.5rem", marginBottom: "20px", color: dragActive ? "#3b82f6" : "#94a3b8" }}>
                 📄
-              </div>
-              <p style={{ 
+            </div>
+            <p style={{ 
                 fontSize: "1.3rem",
                 color: "#0f172a",
-                fontWeight: "600",
+              fontWeight: "600",
                 marginBottom: "10px"
-              }}>
+            }}>
                 {file ? `✓ ${file.name}` : "Drop your resume here or click to upload"}
-              </p>
-              <p style={{ 
+            </p>
+            <p style={{ 
                 fontSize: "1.05rem",
                 color: "#64748b"
-              }}>
+            }}>
                 Supports .txt, .pdf, .docx (Max 10MB)
-              </p>
-            </div>
+            </p>
+      </div>
 
-            <input
-              id="fileInput"
-              type="file"
-              accept=".txt,.pdf,.docx"
-              onChange={async (e) => {
-                const selectedFile = e.target.files[0];
-                if (selectedFile) {
-                  setFile(selectedFile);
-                  setScoreResult(null);
-                  try {
-                    const content = await extractTextFromFile(selectedFile);
-                    setPreviewContent(content);
-                  } catch (error) {
+          <input
+            id="fileInput"
+            type="file"
+            accept=".txt,.pdf,.docx"
+            onChange={async (e) => {
+              const selectedFile = e.target.files[0];
+              if (selectedFile) {
+                setFile(selectedFile);
+                setScoreResult(null);
+                try {
+                  const content = await extractTextFromFile(selectedFile);
+                  setPreviewContent(content);
+                } catch (error) {
                     console.error("Error:", error);
-                  }
                 }
-              }}
-              style={{ display: "none" }}
-            />
-
+              }
+            }}
+            style={{ display: "none" }}
+          />
+          
             {/* Action Buttons */}
-            {file && (
+          {file && (
               <div style={{ display: "flex", gap: "16px" }}>
-                <button 
+              <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowPreview(!showPreview);
                   }}
-                  style={{
+                style={{ 
                     flex: 1,
                     padding: "16px",
                     fontSize: "1.1rem",
@@ -336,17 +336,17 @@ function ResumeRater() {
                     borderRadius: "12px",
                     cursor: "pointer",
                     transition: "all 0.3s ease"
-                  }}
-                >
+                }}
+              >
                   {showPreview ? "Hide Preview" : "👁️ Preview Resume"}
-                </button>
-                <button 
+              </button>
+              <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     handleUploadAndScore();
                   }}
                   disabled={loading}
-                  style={{
+                style={{ 
                     flex: 1,
                     padding: "16px",
                     fontSize: "1.1rem",
@@ -358,16 +358,16 @@ function ResumeRater() {
                     cursor: loading ? "not-allowed" : "pointer",
                     transition: "all 0.3s ease",
                     boxShadow: loading ? "none" : "0 4px 12px rgba(59, 130, 246, 0.3)"
-                  }}
-                >
+                }}
+              >
                   {loading ? "⏳ Analyzing..." : "🚀 Analyze Resume"}
-                </button>
-              </div>
-            )}
-          </div>
+              </button>
+            </div>
+          )}
+        </div>
 
           {/* RIGHT: Features/Info */}
-          <div style={{
+          <div style={{ 
             backgroundColor: "#ffffff",
             padding: "48px",
             borderRadius: "24px",
@@ -391,8 +391,8 @@ function ResumeRater() {
                 { icon: "✓", text: "Professional Tone", color: "#06b6d4" }
               ].map((feature, i) => (
                 <div key={i} style={{
-                  display: "flex",
-                  alignItems: "center",
+              display: "flex", 
+              alignItems: "center", 
                   gap: "16px",
                   padding: "16px 20px",
                   backgroundColor: "#f8fafc",
@@ -441,7 +441,7 @@ function ResumeRater() {
                 ✕ Close
               </button>
             </div>
-            <div style={{
+            <div style={{ 
               backgroundColor: "#f8fafc",
               padding: "32px",
               borderRadius: "12px",
@@ -449,9 +449,9 @@ function ResumeRater() {
               overflowY: "auto",
               border: "1px solid #e5e7eb"
             }}>
-              <pre style={{
+              <pre style={{ 
                 color: "#0f172a",
-                whiteSpace: "pre-wrap",
+                whiteSpace: "pre-wrap", 
                 fontSize: "1rem",
                 lineHeight: "1.7",
                 margin: 0,
@@ -464,60 +464,60 @@ function ResumeRater() {
         )}
 
         {/* LOADING SECTION */}
-        {loading && (
-          <div style={{
+          {loading && (
+            <div style={{ 
             backgroundColor: "#ffffff",
             padding: "60px",
             borderRadius: "24px",
             textAlign: "center",
             marginBottom: "60px",
             border: "2px solid #e5e7eb"
-          }}>
+            }}>
             <div style={{ fontSize: "4rem", marginBottom: "24px", animation: "pulse 2s infinite" }}>⚙️</div>
-            <p style={{
+              <p style={{ 
               fontSize: "1.5rem",
               fontWeight: "700",
               color: "#3b82f6",
               marginBottom: "24px"
-            }}>
-              {analysisSteps[analysisStep]}
-            </p>
-            <div style={{
-              width: "100%",
+              }}>
+                {analysisSteps[analysisStep]}
+              </p>
+              <div style={{ 
+                width: "100%", 
               maxWidth: "600px",
               margin: "0 auto",
               height: "12px",
               backgroundColor: "#e5e7eb",
               borderRadius: "6px",
-              overflow: "hidden"
-            }}>
-              <div style={{
-                width: `${((analysisStep + 1) / analysisSteps.length) * 100}%`,
-                height: "100%",
+                overflow: "hidden"
+              }}>
+                <div style={{
+                  width: `${((analysisStep + 1) / analysisSteps.length) * 100}%`,
+                  height: "100%",
                 backgroundColor: "#3b82f6",
                 transition: "width 0.8s ease",
                 borderRadius: "6px"
-              }}></div>
-            </div>
-          </div>
-        )}
+                }}></div>
+              </div>
+        </div>
+      )}
 
         {/* RESULTS SECTION */}
-        {scoreResult && (
+      {scoreResult && (
           <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
             
             {/* Overall Score Card - BIG */}
-            <div style={{
+            <div style={{ 
               backgroundColor: "#ffffff",
               padding: "60px",
               borderRadius: "24px",
-              textAlign: "center",
+              textAlign: "center", 
               border: "2px solid #e5e7eb",
               boxShadow: "0 8px 24px rgba(0, 0, 0, 0.06)"
             }}>
               <h2 style={{
                 fontSize: "2.2rem",
-                fontWeight: "700",
+                fontWeight: "700", 
                 color: "#0f172a",
                 marginBottom: "32px"
               }}>
@@ -532,14 +532,14 @@ function ResumeRater() {
               }}>
                 {scoreResult.total}
               </div>
-              <div style={{
+              <div style={{ 
                 fontSize: "1.6rem",
                 color: "#64748b",
                 marginBottom: "24px"
               }}>
                 out of 100
               </div>
-              <div style={{
+              <div style={{ 
                 display: "inline-block",
                 padding: "14px 36px",
                 backgroundColor: "#f8fafc",
@@ -583,7 +583,7 @@ function ResumeRater() {
                   📊 Summary
                 </h3>
                 <p style={{
-                  fontSize: "1.3rem",
+                fontSize: "1.3rem",
                   lineHeight: "1.8",
                   margin: 0
                 }}>
@@ -613,7 +613,7 @@ function ResumeRater() {
                 gap: "24px"
               }}>
                 {Object.entries(scoreResult.breakdown).map(([category, score]) => (
-                  <div key={category} style={{
+                <div key={category} style={{ 
                     backgroundColor: "#f8fafc",
                     padding: "28px",
                     borderRadius: "16px",
@@ -627,61 +627,61 @@ function ResumeRater() {
                   onMouseOut={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
-                  }}>
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                }}>
+                  <div style={{ 
+                    display: "flex", 
+                    justifyContent: "space-between", 
+                    alignItems: "center",
                       marginBottom: "16px"
-                    }}>
-                      <span style={{
+                  }}>
+                    <span style={{ 
                         fontSize: "1.2rem",
                         fontWeight: "700",
                         color: "#0f172a"
-                      }}>
-                        {category}
-                      </span>
-                      <span style={{
+                    }}>
+                      {category}
+                    </span>
+                    <span style={{ 
                         fontSize: "2rem",
                         fontWeight: "800",
                         color: getScoreColor(score)
-                      }}>
+                    }}>
                         {score}
-                      </span>
-                    </div>
-                    <div style={{
-                      width: "100%",
+                    </span>
+                  </div>
+                  <div style={{ 
+                    width: "100%", 
                       height: "12px",
                       backgroundColor: "#e5e7eb",
                       borderRadius: "6px",
-                      overflow: "hidden"
-                    }}>
-                      <div style={{
-                        width: `${score}%`,
-                        height: "100%",
-                        backgroundColor: getScoreColor(score),
+                    overflow: "hidden"
+                  }}>
+                    <div style={{
+                      width: `${score}%`,
+                      height: "100%",
+                      backgroundColor: getScoreColor(score),
                         transition: "width 1.2s ease",
                         borderRadius: "6px"
-                      }}></div>
-                    </div>
+                    }}></div>
                   </div>
-                ))}
+                </div>
+              ))}
               </div>
             </div>
 
             {/* Strengths & Improvements - 2 COLUMNS */}
-            <div style={{
+                <div style={{ 
               display: "grid",
               gridTemplateColumns: "repeat(2, 1fr)",
               gap: "40px"
-            }}>
-              {/* Strengths */}
-              <div style={{
+                  }}>
+            {/* Strengths */}
+                <div style={{ 
                 backgroundColor: "#f0fdf4",
                 padding: "48px",
                 borderRadius: "24px",
                 border: "2px solid #86efac"
-              }}>
+                }}>
                 <h3 style={{
                   fontSize: "2rem",
                   fontWeight: "700",
@@ -695,33 +695,33 @@ function ResumeRater() {
                   Strengths
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {scoreResult.strengths.map((strength, i) => (
-                    <div key={i} style={{
+                    {scoreResult.strengths.map((strength, i) => (
+                      <div key={i} style={{ 
                       padding: "18px 24px",
                       backgroundColor: "#ffffff",
                       borderRadius: "12px",
                       fontSize: "1.15rem",
                       color: "#166534",
                       fontWeight: "500",
-                      display: "flex",
-                      alignItems: "center",
+                        display: "flex",
+                        alignItems: "center",
                       gap: "12px",
                       border: "1px solid #86efac"
-                    }}>
+                      }}>
                       <span style={{ fontSize: "1.4rem" }}>✓</span>
-                      {strength}
-                    </div>
-                  ))}
+                          {strength}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
               {/* Improvements */}
-              <div style={{
+                <div style={{ 
                 backgroundColor: "#fef2f2",
                 padding: "48px",
                 borderRadius: "24px",
                 border: "2px solid #fca5a5"
-              }}>
+                }}>
                 <h3 style={{
                   fontSize: "2rem",
                   fontWeight: "700",
@@ -735,29 +735,29 @@ function ResumeRater() {
                   Areas to Improve
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {scoreResult.improvements.map((improvement, i) => (
-                    <div key={i} style={{
+                    {scoreResult.improvements.map((improvement, i) => (
+                      <div key={i} style={{ 
                       padding: "18px 24px",
                       backgroundColor: "#ffffff",
                       borderRadius: "12px",
                       fontSize: "1.15rem",
                       color: "#991b1b",
                       fontWeight: "500",
-                      display: "flex",
-                      alignItems: "center",
+                        display: "flex",
+                        alignItems: "center",
                       gap: "12px",
                       border: "1px solid #fca5a5"
-                    }}>
+                      }}>
                       <span style={{ fontSize: "1.4rem" }}>→</span>
-                      {improvement}
-                    </div>
-                  ))}
+                          {improvement}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
             {/* Recommendations */}
-            <div style={{
+              <div style={{ 
               backgroundColor: "#ffffff",
               padding: "48px",
               borderRadius: "24px",
@@ -771,18 +771,18 @@ function ResumeRater() {
               }}>
                 💡 Personalized Recommendations
               </h3>
-              {scoreResult.advice.map((advice, i) => (
-                <div key={i} style={{
+                {scoreResult.advice.map((advice, i) => (
+                  <div key={i} style={{ 
                   backgroundColor: "#f8fafc",
                   padding: "24px 28px",
                   borderRadius: "16px",
                   marginBottom: "16px",
                   border: "2px solid #e5e7eb",
-                  display: "flex",
+                      display: "flex", 
                   gap: "20px",
                   alignItems: "start"
-                }}>
-                  <span style={{
+                    }}>
+                      <span style={{ 
                     width: "36px",
                     height: "36px",
                     backgroundColor: "#3b82f6",
@@ -791,24 +791,24 @@ function ResumeRater() {
                     alignItems: "center",
                     justifyContent: "center",
                     color: "#ffffff",
-                    fontSize: "1.2rem",
+                        fontSize: "1.2rem",
                     fontWeight: "800",
                     flexShrink: 0
-                  }}>
+                      }}>
                     {i + 1}
-                  </span>
-                  <p style={{
+                      </span>
+                      <p style={{ 
                     fontSize: "1.15rem",
                     color: "#0f172a",
                     margin: 0,
                     lineHeight: "1.7",
                     fontWeight: "500"
-                  }}>
-                    {advice}
-                  </p>
-                </div>
-              ))}
-            </div>
+                      }}>
+                        {advice}
+                      </p>
+                  </div>
+                ))}
+              </div>
 
             {/* Try Again Button */}
             <div style={{ textAlign: "center", paddingTop: "20px" }}>

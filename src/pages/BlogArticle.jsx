@@ -1,41 +1,53 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { blogArticles } from '../data/blogArticles';
 
 const BlogArticle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // In a real app, this would fetch from an API
-  const article = {
-    id: parseInt(id),
-    title: 'How to Land a High-Paying Remote Job',
-    date: 'February 17, 2025',
-    readTime: '7 min read',
-    category: 'Remote Work',
-    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=600&fit=crop',
-    content: `
-      <h2>Introduction</h2>
-      <p>Landing a high-paying remote job requires a strategic approach. In this comprehensive guide, we'll walk you through the essential steps to secure your dream remote position.</p>
-      
-      <h2>1. Build a Strong Online Presence</h2>
-      <p>Your online presence is your first impression. Ensure your LinkedIn profile is complete, professional, and optimized for remote work keywords. Create a portfolio website showcasing your best work.</p>
-      
-      <h2>2. Master Remote-Specific Skills</h2>
-      <p>Remote work requires unique skills like time management, communication, and self-discipline. Highlight these in your resume and interviews.</p>
-      
-      <h2>3. Target the Right Companies</h2>
-      <p>Research companies that are known for remote work. Look for distributed teams, remote-first cultures, and companies that value work-life balance.</p>
-      
-      <h2>4. Optimize Your Resume for Remote Jobs</h2>
-      <p>Use keywords like "remote," "distributed team," and "remote collaboration." Highlight any previous remote work experience or remote-friendly skills.</p>
-      
-      <h2>5. Ace the Remote Interview</h2>
-      <p>Prepare for video interviews, demonstrate your communication skills, and show that you can work independently while staying connected with your team.</p>
-      
-      <h2>Conclusion</h2>
-      <p>Landing a high-paying remote job is achievable with the right strategy. Focus on building your skills, optimizing your application materials, and targeting the right opportunities.</p>
-    `
-  };
+  // Find the article by ID
+  const article = blogArticles.find(a => a.id === parseInt(id));
+
+  // If article not found, show error message
+  if (!article) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        width: '100vw',
+        maxWidth: '100vw',
+        overflowX: 'hidden',
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          color: '#ffffff'
+        }}>
+          <h1 style={{ fontSize: '2rem', marginBottom: '20px' }}>Article Not Found</h1>
+          <p style={{ marginBottom: '30px', color: '#94a3b8' }}>The article you're looking for doesn't exist.</p>
+          <button
+            onClick={() => navigate('/blog')}
+            style={{
+              padding: '12px 24px',
+              background: '#667eea',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Back to Blog
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
