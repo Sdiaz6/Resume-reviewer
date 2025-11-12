@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
+import { AuthProvider } from './contexts/AuthContext'
+import { ResumeProvider } from './contexts/ResumeContext'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootswatch/dist/lux/bootstrap.min.css'; //lux theme from bootswatch
@@ -10,7 +12,11 @@ import 'bootswatch/dist/lux/bootstrap.min.css'; //lux theme from bootswatch
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <ResumeProvider>
+          <App />
+        </ResumeProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import CompaniesShowcase from "../components/CompaniesShowcase";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -357,6 +358,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* COMPANIES SHOWCASE - Floating Companies */}
+      <CompaniesShowcase />
 
       {/* CTA SECTION */}
       <section style={{ 

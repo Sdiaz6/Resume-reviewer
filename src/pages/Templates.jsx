@@ -166,23 +166,26 @@ const Templates = () => {
           marginBottom: windowWidth < 768 ? "32px" : "48px",
           width: "100%",
           maxWidth: "100%",
-          boxSizing: "border-box"
+          boxSizing: "border-box",
+          padding: windowWidth < 768 ? "0" : "0 20px"
         }}>
           {templates.map((template) => (
             <div
               key={template.id}
-              onClick={() => navigate("/build-resume", { state: { template: template.id } })}
               style={{
                 background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(20px)",
-                borderRadius: "16px",
-                padding: windowWidth < 768 ? "24px" : "32px",
+                borderRadius: "20px",
+                padding: windowWidth < 768 ? "20px" : "28px",
                 border: "2px solid rgba(255, 255, 255, 0.3)",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
                 boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
                 width: "100%",
-                boxSizing: "border-box"
+                boxSizing: "border-box",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%"
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.transform = "translateY(-8px)";
@@ -195,25 +198,31 @@ const Templates = () => {
                 e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
               }}
             >
+              {/* Template Preview Container */}
               <div style={{
                 background: template.premium ? "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)" : "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
                 borderRadius: "12px",
-                padding: windowWidth < 768 ? "16px" : "24px",
-                marginBottom: "24px",
-                minHeight: windowWidth < 768 ? "250px" : "300px",
+                padding: windowWidth < 768 ? "12px" : "16px",
+                marginBottom: "20px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: "100%"
+                width: "100%",
+                minHeight: windowWidth < 768 ? "200px" : "240px",
+                maxHeight: windowWidth < 768 ? "250px" : "280px",
+                overflow: "hidden",
+                position: "relative"
               }}>
                 <div style={{
                   background: "#ffffff",
                   borderRadius: "8px",
-                  padding: windowWidth < 768 ? "12px" : "20px",
+                  padding: windowWidth < 768 ? "8px" : "12px",
                   width: "100%",
-                  maxWidth: windowWidth < 768 ? "200px" : "250px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  boxSizing: "border-box"
+                  maxWidth: windowWidth < 768 ? "180px" : "220px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                  boxSizing: "border-box",
+                  transform: "scale(0.85)",
+                  transformOrigin: "top center"
                 }}>
                   <template.component
                     basicInfo={{ name: "John Doe", email: "john@example.com" }}
@@ -224,63 +233,88 @@ const Templates = () => {
                   />
                 </div>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                <div style={{ width: "100%" }}>
-                  <h3 style={{
-                    fontSize: windowWidth < 768 ? "1.2rem" : "1.5rem",
-                    fontWeight: "700",
-                    color: "#0f172a",
-                    marginBottom: "8px"
+
+              {/* Template Info */}
+              <div style={{ 
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
+              }}>
+                <div>
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: "12px"
                   }}>
-                    {template.name}
+                    <h3 style={{
+                      fontSize: windowWidth < 768 ? "1.25rem" : "1.5rem",
+                      fontWeight: "700",
+                      color: "#0f172a",
+                      margin: 0
+                    }}>
+                      {template.name}
+                    </h3>
                     {template.premium && (
                       <span style={{
-                        marginLeft: "8px",
-                        fontSize: "0.9rem",
+                        fontSize: "0.75rem",
                         color: "#f59e0b",
-                        fontWeight: "600"
-                      }}>★ Premium</span>
+                        fontWeight: "700",
+                        background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        border: "1px solid #f59e0b"
+                      }}>
+                        ★ Premium
+                      </span>
                     )}
-                  </h3>
+                  </div>
                   <p style={{
-                    fontSize: windowWidth < 768 ? "0.85rem" : "0.95rem",
+                    fontSize: windowWidth < 768 ? "0.875rem" : "0.95rem",
                     color: "#64748b",
-                    margin: 0
+                    margin: 0,
+                    lineHeight: "1.5",
+                    marginBottom: "20px"
                   }}>
                     {template.description}
                   </p>
                 </div>
+
+                {/* Action Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/build-resume", { state: { template: template.id } });
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: windowWidth < 768 ? "12px 20px" : "14px 24px",
+                    backgroundColor: template.premium ? "#f59e0b" : "#3b82f6",
+                    color: "#ffffff",
+                    border: "none",
+                    borderRadius: "10px",
+                    fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    boxSizing: "border-box",
+                    marginTop: "auto"
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = template.premium ? "#d97706" : "#2563eb";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = template.premium ? "#f59e0b" : "#3b82f6";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow = "none";
+                  }}
+                >
+                  {template.premium ? "Unlock Premium" : "Use Template"}
+                </button>
               </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate("/build-resume", { state: { template: template.id } });
-                }}
-                style={{
-                  width: "100%",
-                  marginTop: "24px",
-                  padding: windowWidth < 768 ? "12px 20px" : "14px 24px",
-                  backgroundColor: template.premium ? "#f59e0b" : "#3b82f6",
-                  color: "#ffffff",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  boxSizing: "border-box"
-                }}
-                onMouseOver={(e) => {
-                  e.target.style.backgroundColor = template.premium ? "#d97706" : "#2563eb";
-                  e.target.style.transform = "translateY(-2px)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.backgroundColor = template.premium ? "#f59e0b" : "#3b82f6";
-                  e.target.style.transform = "translateY(0)";
-                }}
-              >
-                {template.premium ? "Unlock Premium" : "Use Template"}
-              </button>
             </div>
           ))}
         </div>
