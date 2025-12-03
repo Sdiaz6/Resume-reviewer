@@ -112,6 +112,24 @@ export const ResumeProvider = ({ children }) => {
     try {
       await setDoc(doc(db, 'resumes', resumeId), newResume);
       await loadResumes();
+      
+      // Update user analytics for template usage
+      try {
+        const { doc: userDocRef, getDoc: getUserDoc, updateDoc: updateUserDoc } = await import('firebase/firestore');
+        const userRef = userDocRef(db, 'users', currentUser.uid);
+        const userDoc = await getUserDoc(userRef);
+        if (userDoc.exists()) {
+          const currentAnalytics = userDoc.data().analytics || {};
+          await updateUserDoc(userRef, {
+            'analytics.totalResumes': (currentAnalytics.totalResumes || 0) + 1,
+            [`analytics.templateUsage.${template}`]: (currentAnalytics.templateUsage?.[template] || 0) + 1
+          });
+        }
+      } catch (analyticsError) {
+        console.error("Error updating template analytics:", analyticsError);
+        // Don't throw - resume creation still worked
+      }
+      
       return newResume;
     } catch (error) {
       console.error('Error creating resume:', error);

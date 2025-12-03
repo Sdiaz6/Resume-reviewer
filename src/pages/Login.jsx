@@ -20,18 +20,25 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       // Handle Firebase configuration errors gracefully
-      if (err.message?.includes('api-key-not-valid') || err.message?.includes('api-key')) {
-        setError('Firebase is not configured. Please contact the administrator or check the setup guide.');
-      } else if (err.message?.includes('auth/user-not-found')) {
+      const errorCode = err.code || '';
+      const errorMessage = err.message || '';
+      
+      console.error('Login error:', { code: errorCode, message: errorMessage, error: err });
+      
+      if (errorCode === 'auth/operation-not-allowed' || errorMessage.includes('operation-not-allowed')) {
+        setError('Email/Password authentication is not enabled. Please enable it in Firebase Console > Authentication > Sign-in method > Email/Password.');
+      } else if (errorCode === 'auth/user-not-found' || errorMessage.includes('user-not-found')) {
         setError('No account found with this email. Please sign up first.');
-      } else if (err.message?.includes('auth/wrong-password')) {
+      } else if (errorCode === 'auth/wrong-password' || errorMessage.includes('wrong-password')) {
         setError('Incorrect password. Please try again.');
-      } else if (err.message?.includes('auth/invalid-email')) {
+      } else if (errorCode === 'auth/invalid-email' || errorMessage.includes('invalid-email')) {
         setError('Please enter a valid email address.');
-      } else if (err.message?.includes('auth/too-many-requests')) {
+      } else if (errorCode === 'auth/too-many-requests' || errorMessage.includes('too-many-requests')) {
         setError('Too many failed attempts. Please try again later.');
+      } else if (errorCode?.includes('api-key-not-valid') || errorMessage?.includes('api-key')) {
+        setError('Firebase is not configured. Please check the setup guide.');
       } else {
-        setError(err.message || 'Failed to sign in. Please try again.');
+        setError(errorMessage || `Failed to sign in. Error: ${errorCode || 'Unknown error'}`);
       }
     } finally {
       setLoading(false);
@@ -47,12 +54,22 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       // Handle Firebase configuration errors gracefully
-      if (err.message?.includes('api-key-not-valid') || err.message?.includes('api-key')) {
-        setError('Firebase is not configured. Please contact the administrator or check the setup guide.');
-      } else if (err.message?.includes('popup-closed')) {
+      const errorCode = err.code || '';
+      const errorMessage = err.message || '';
+      
+      console.error('Google Login error:', { code: errorCode, message: errorMessage, error: err });
+      
+      if (errorCode === 'auth/operation-not-allowed' || errorCode === 'auth/configuration-not-found' || 
+          errorMessage.includes('configuration-not-found') || errorMessage.includes('operation-not-allowed')) {
+        setError('Google Sign-in is not enabled. Go to Firebase Console > Authentication > Sign-in method > Google > Enable.');
+      } else if (errorCode === 'auth/popup-closed' || errorMessage.includes('popup-closed')) {
         setError('Sign-in popup was closed. Please try again.');
+      } else if (errorCode === 'auth/popup-blocked' || errorMessage.includes('popup-blocked')) {
+        setError('Popup was blocked. Please allow popups for localhost:5173 in your browser settings.');
+      } else if (errorCode === 'auth/cancelled-popup-request' || errorMessage.includes('cancelled-popup')) {
+        setError('Sign-in was cancelled. Please try again.');
       } else {
-        setError(err.message || 'Failed to sign in with Google. Please try again.');
+        setError(errorMessage || `Failed to sign in with Google. Error: ${errorCode || 'Unknown error'}`);
       }
     } finally {
       setLoading(false);

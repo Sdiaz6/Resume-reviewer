@@ -11,6 +11,7 @@ import BlogArticle from "./pages/BlogArticle";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Analytics from "./pages/Analytics";
+import Dashboard from "./pages/Dashboard";
 import Navbar from "./pages/NavBar";
 import Footer from "./pages/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -36,6 +37,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Analytics />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           } 
         />

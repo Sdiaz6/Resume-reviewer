@@ -104,7 +104,7 @@ const About = () => {
         position: "relative",
         boxSizing: "border-box"
       }}>
-        <div style={{ 
+        <div style={{
           maxWidth: "100%", 
           width: "100%", 
           padding: getPadding(), 
@@ -120,59 +120,59 @@ const About = () => {
             marginBottom: windowWidth < 768 ? "60px" : "80px",
             width: "100%"
           }}>
-            <h2 style={{ 
-              color: "#1e293b", 
+          <h2 style={{ 
+            color: "#1e293b", 
               fontSize: windowWidth < 768 ? "2rem" : windowWidth < 1024 ? "2.5rem" : "3rem", 
-              fontWeight: "800",
-              fontFamily: "'Montserrat', 'Playfair Display', serif",
-              letterSpacing: "-0.5px",
-              marginBottom: "40px"
-            }}>
-              Our Mission
-            </h2>
-            <p style={{ 
-              color: "#64748b", 
+            fontWeight: "800",
+            fontFamily: "'Montserrat', 'Playfair Display', serif",
+            letterSpacing: "-0.5px",
+            marginBottom: "40px"
+          }}>
+            Our Mission
+          </h2>
+          <p style={{ 
+            color: "#64748b", 
               fontSize: windowWidth < 768 ? "1rem" : windowWidth < 1024 ? "1.15rem" : "1.3rem",
-              fontWeight: "400",
-              fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-              lineHeight: "1.8",
+            fontWeight: "400",
+            fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
+            lineHeight: "1.8",
               maxWidth: "1000px",
               margin: "0 auto",
               width: "100%"
-            }}>
-              To democratize access to professional resume optimization tools, making it easier for job seekers to present their best selves to potential employers. We believe everyone deserves a fair chance at their dream job.
-            </p>
-          </div>
+          }}>
+            To democratize access to professional resume optimization tools, making it easier for job seekers to present their best selves to potential employers. We believe everyone deserves a fair chance at their dream job.
+          </p>
+        </div>
 
-          {/* Team Section */}
+      {/* Team Section */}
           <div style={{ width: "100%" }}>
-            <h2 style={{ 
-              color: "#1e293b", 
+          <h2 style={{ 
+            color: "#1e293b", 
               fontSize: windowWidth < 768 ? "2rem" : windowWidth < 1024 ? "2.5rem" : "3rem", 
-              fontWeight: "800",
-              fontFamily: "'Montserrat', 'Playfair Display', serif",
-              letterSpacing: "-0.5px",
-              textAlign: "center",
+            fontWeight: "800",
+            fontFamily: "'Montserrat', 'Playfair Display', serif",
+            letterSpacing: "-0.5px",
+            textAlign: "center",
               marginBottom: windowWidth < 768 ? "40px" : "60px"
-            }}>
-              Meet the Team
-            </h2>
-            <div style={{ 
-              display: "grid", 
+          }}>
+            Meet the Team
+          </h2>
+          <div style={{ 
+            display: "grid", 
               gridTemplateColumns: windowWidth < 768 ? "1fr" : windowWidth < 1024 ? "repeat(2, 1fr)" : "repeat(3, 1fr)", 
               gap: windowWidth < 768 ? "30px" : "40px",
               width: "100%",
               maxWidth: "100%",
               justifyContent: "center",
               justifyItems: "center"
-            }}>
-              {/* Michael Serbeh */}
-              <div style={{ 
+          }}>
+            {/* Michael Serbeh */}
+            <div style={{ 
                 background: "#ffffff",
                 border: "1px solid #e5e7eb",
                 borderRadius: "20px",
                 padding: windowWidth < 768 ? "30px 20px" : "40px 30px",
-                textAlign: "center",
+              textAlign: "center",
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
                 transition: "all 0.3s ease",
                 width: "100%",
@@ -188,90 +188,90 @@ const About = () => {
                 e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.05)";
               }}
               >
-                <div style={{
+              <div style={{
                   width: windowWidth < 768 ? "80px" : "100px",
                   height: windowWidth < 768 ? "80px" : "100px",
                   borderRadius: "20px",
                   margin: "0 auto 25px",
                   boxShadow: "0 8px 20px rgba(102, 126, 234, 0.3)",
-                  position: "relative",
-                  overflow: "hidden",
+                position: "relative",
+                overflow: "hidden",
                   border: "3px solid #e5e7eb"
-                }}>
-                  <img 
-                    src="/michael-profilepic.jpg?v=1" 
-                    alt="Michael Serbeh"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+              }}>
+                <img 
+                  src="/michael-profilepic.jpg?v=1" 
+                  alt="Michael Serbeh"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                       borderRadius: "17px"
-                    }}
-                  />
-                </div>
-                <h3 style={{ 
-                  color: "#1e293b", 
-                  fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
-                  fontWeight: "800",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  marginBottom: "12px",
-                  letterSpacing: "0.5px"
-                }}>
-                  Michael Serbeh
-                </h3>
-                <p style={{ 
-                  color: "#667eea", 
-                  fontSize: windowWidth < 768 ? "0.95rem" : "1.1rem",
-                  fontWeight: "600",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  marginBottom: "16px"
-                }}>
-                  Lead Developer & AI Specialist
-                </p>
-                <p style={{ 
-                  color: "#64748b", 
-                  fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
-                  fontWeight: "400",
-                  fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-                  lineHeight: "1.6",
-                  marginBottom: "20px"
-                }}>
-                  Passionate tech enthusiast specializing in AI, ML, Cybersecurity, and Software Engineering. Currently at Stetson University, creating innovative solutions to help job seekers optimize their resumes and land dream positions.
-                </p>
-                <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
-                  <a href="https://github.com/Michael5577" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#667eea", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    GitHub
-                  </a>
-                  <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
-                  <a href="https://www.linkedin.com/in/michael-serbeh-421895281/" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#f5576c", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    LinkedIn
-                  </a>
-                </div>
+                  }}
+                />
               </div>
+              <h3 style={{ 
+                color: "#1e293b", 
+                  fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
+                fontWeight: "800",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                  marginBottom: "12px",
+                letterSpacing: "0.5px"
+              }}>
+                Michael Serbeh
+              </h3>
+              <p style={{ 
+                color: "#667eea", 
+                  fontSize: windowWidth < 768 ? "0.95rem" : "1.1rem",
+                fontWeight: "600",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                  marginBottom: "16px"
+              }}>
+                Lead Developer & AI Specialist
+              </p>
+              <p style={{ 
+                color: "#64748b", 
+                  fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
+                fontWeight: "400",
+                fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
+                lineHeight: "1.6",
+                  marginBottom: "20px"
+              }}>
+                Passionate tech enthusiast specializing in AI, ML, Cybersecurity, and Software Engineering. Currently at Stetson University, creating innovative solutions to help job seekers optimize their resumes and land dream positions.
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
+                <a href="https://github.com/Michael5577" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#667eea", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
+                }}>
+                  GitHub
+                </a>
+                <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
+                <a href="https://www.linkedin.com/in/michael-serbeh-421895281/" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#f5576c", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
+                }}>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
 
-              {/* Silvana Diaz */}
-              <div style={{ 
+            {/* Silvana Diaz */}
+            <div style={{ 
                 background: "#ffffff",
                 border: "1px solid #e5e7eb",
                 borderRadius: "20px",
                 padding: windowWidth < 768 ? "30px 20px" : "40px 30px",
-                textAlign: "center",
+              textAlign: "center",
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
                 transition: "all 0.3s ease",
                 width: "100%",
@@ -287,90 +287,90 @@ const About = () => {
                 e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.05)";
               }}
               >
-                <div style={{
+              <div style={{
                   width: windowWidth < 768 ? "80px" : "100px",
                   height: windowWidth < 768 ? "80px" : "100px",
                   borderRadius: "20px",
                   margin: "0 auto 25px",
                   boxShadow: "0 8px 20px rgba(79, 172, 254, 0.3)",
-                  position: "relative",
-                  overflow: "hidden",
+                position: "relative",
+                overflow: "hidden",
                   border: "3px solid #e5e7eb"
-                }}>
-                  <img 
-                    src="/silvana-profile.jpg?v=1" 
-                    alt="Silvana Diaz"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+              }}>
+                <img 
+                  src="/silvana-profile.jpg?v=1" 
+                  alt="Silvana Diaz"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                       borderRadius: "17px"
-                    }}
-                  />
-                </div>
-                <h3 style={{ 
-                  color: "#1e293b", 
-                  fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
-                  fontWeight: "800",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  marginBottom: "12px",
-                  letterSpacing: "0.5px"
-                }}>
-                  Silvana Diaz
-                </h3>
-                <p style={{ 
-                  color: "#4facfe", 
-                  fontSize: windowWidth < 768 ? "0.95rem" : "1.1rem",
-                  fontWeight: "600",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  marginBottom: "16px"
-                }}>
-                  Creative Designer & Brand Specialist
-                </p>
-                <p style={{ 
-                  color: "#64748b", 
-                  fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
-                  fontWeight: "400",
-                  fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-                  lineHeight: "1.6",
-                  marginBottom: "20px"
-                }}>
-                  Talented designer with a keen eye for aesthetics and brand identity. Specializes in creating visually stunning and user-friendly interfaces that engage and delight users.
-                </p>
-                <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
-                  <a href="https://github.com/Sdiaz6" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#4facfe", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    GitHub
-                  </a>
-                  <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
-                  <a href="https://www.linkedin.com/in/silvana-diaz-8612662b5" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#f5576c", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    LinkedIn
-                  </a>
-                </div>
+                  }}
+                />
               </div>
+              <h3 style={{ 
+                color: "#1e293b", 
+                  fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
+                fontWeight: "800",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                  marginBottom: "12px",
+                letterSpacing: "0.5px"
+              }}>
+                Silvana Diaz
+              </h3>
+              <p style={{ 
+                color: "#4facfe", 
+                  fontSize: windowWidth < 768 ? "0.95rem" : "1.1rem",
+                fontWeight: "600",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                  marginBottom: "16px"
+              }}>
+                Creative Designer & Brand Specialist
+              </p>
+              <p style={{ 
+                color: "#64748b", 
+                  fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
+                fontWeight: "400",
+                fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
+                lineHeight: "1.6",
+                  marginBottom: "20px"
+              }}>
+                Talented designer with a keen eye for aesthetics and brand identity. Specializes in creating visually stunning and user-friendly interfaces that engage and delight users.
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
+                <a href="https://github.com/Sdiaz6" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#4facfe", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
+                }}>
+                  GitHub
+                </a>
+                <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
+                <a href="https://www.linkedin.com/in/silvana-diaz-8612662b5" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#f5576c", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
+                }}>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
 
-              {/* Gillian Dodge */}
-              <div style={{ 
+            {/* Gillian Dodge */}
+            <div style={{ 
                 background: "#ffffff",
                 border: "1px solid #e5e7eb",
                 borderRadius: "20px",
                 padding: windowWidth < 768 ? "30px 20px" : "40px 30px",
-                textAlign: "center",
+              textAlign: "center",
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
                 transition: "all 0.3s ease",
                 width: "100%",
@@ -386,80 +386,80 @@ const About = () => {
                 e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.05)";
               }}
               >
-                <div style={{
+              <div style={{
                   width: windowWidth < 768 ? "80px" : "100px",
                   height: windowWidth < 768 ? "80px" : "100px",
                   borderRadius: "20px",
                   margin: "0 auto 25px",
                   boxShadow: "0 8px 20px rgba(240, 147, 251, 0.3)",
-                  position: "relative",
-                  overflow: "hidden",
+                position: "relative",
+                overflow: "hidden",
                   border: "3px solid #e5e7eb"
-                }}>
-                  <img 
-                    src="/gillian-profile.jpeg?v=1" 
-                    alt="Gillian Dodge"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+              }}>
+                <img 
+                  src="/gillian-profile.jpeg?v=1" 
+                  alt="Gillian Dodge"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                       borderRadius: "17px"
-                    }}
-                  />
-                </div>
-                <h3 style={{ 
-                  color: "#1e293b", 
+                  }}
+                />
+              </div>
+              <h3 style={{ 
+                color: "#1e293b", 
                   fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
-                  fontWeight: "800",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                fontWeight: "800",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
                   marginBottom: "12px",
-                  letterSpacing: "0.5px"
-                }}>
-                  Gillian Dodge
-                </h3>
-                <p style={{ 
-                  color: "#f093fb", 
+                letterSpacing: "0.5px"
+              }}>
+                Gillian Dodge
+              </h3>
+              <p style={{ 
+                color: "#f093fb", 
                   fontSize: windowWidth < 768 ? "0.95rem" : "1.1rem",
-                  fontWeight: "600",
-                  fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
+                fontWeight: "600",
+                fontFamily: "'Poppins', 'Source Sans Pro', sans-serif",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
                   marginBottom: "16px"
-                }}>
-                  Software Developer & Data Analyst
-                </p>
-                <p style={{ 
-                  color: "#64748b", 
+              }}>
+                Software Developer & Data Analyst
+              </p>
+              <p style={{ 
+                color: "#64748b", 
                   fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
-                  fontWeight: "400",
-                  fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
-                  lineHeight: "1.6",
+                fontWeight: "400",
+                fontFamily: "'Source Sans Pro', 'Inter', sans-serif",
+                lineHeight: "1.6",
                   marginBottom: "20px"
+              }}>
+                Skilled software developer with expertise in data analysis and performance optimization. Passionate about using technology to solve real-world problems and improve team performance.
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
+                <a href="https://github.com/gilliandodge" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#f093fb", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
                 }}>
-                  Skilled software developer with expertise in data analysis and performance optimization. Passionate about using technology to solve real-world problems and improve team performance.
-                </p>
-                <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
-                  <a href="https://github.com/gilliandodge" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#f093fb", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    GitHub
-                  </a>
-                  <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
-                  <a href="http://linkedin.com/in/gillian-dodge" target="_blank" rel="noopener noreferrer" style={{ 
-                    color: "#f5576c", 
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    fontFamily: "'Poppins', sans-serif",
-                    transition: "all 0.3s ease"
-                  }}>
-                    LinkedIn
-                  </a>
+                  GitHub
+                </a>
+                <span style={{ color: "#ff6b9d", fontSize: "1.2rem" }}>✦</span>
+                <a href="http://linkedin.com/in/gillian-dodge" target="_blank" rel="noopener noreferrer" style={{ 
+                  color: "#f5576c", 
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  fontFamily: "'Poppins', sans-serif",
+                  transition: "all 0.3s ease"
+                }}>
+                  LinkedIn
+                </a>
                 </div>
               </div>
             </div>

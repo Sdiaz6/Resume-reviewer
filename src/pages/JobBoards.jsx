@@ -365,7 +365,7 @@ const JobBoards = () => {
             maxWidth: '600px',
             margin: '0 auto'
           }}>
-            Discover the best job boards and career resources to land your dream job
+            Discover the best job boards to land your dream job
           </p>
         </div>
 
@@ -403,33 +403,6 @@ const JobBoards = () => {
             }}
           >
             Job Boards
-          </button>
-          <button
-            onClick={() => setActiveTab('career-resources')}
-            style={{
-              padding: '12px 24px',
-              background: activeTab === 'career-resources' ? '#667eea' : 'rgba(255, 255, 255, 0.1)',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              borderBottom: activeTab === 'career-resources' ? '3px solid #667eea' : '3px solid transparent'
-            }}
-            onMouseOver={(e) => {
-              if (activeTab !== 'career-resources') {
-                e.target.style.background = 'rgba(255, 255, 255, 0.15)';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (activeTab !== 'career-resources') {
-                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-              }
-            }}
-          >
-            Career Resources
           </button>
         </div>
 
@@ -868,27 +841,6 @@ const JobBoards = () => {
           </div>
         )}
 
-        {/* Career Resources Tab */}
-        {activeTab === 'career-resources' && (
-          <div style={{
-            textAlign: 'center',
-            padding: '80px 20px',
-            color: '#94a3b8'
-          }}>
-            <div style={{ fontSize: '4rem', marginBottom: '24px' }}>📚</div>
-            <h2 style={{
-              fontSize: '2rem',
-              fontWeight: '700',
-              color: '#ffffff',
-              marginBottom: '16px'
-            }}>
-              Career Resources Coming Soon
-            </h2>
-            <p style={{ fontSize: '1.1rem' }}>
-              We're building a comprehensive library of career resources, interview tips, and job search guides.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

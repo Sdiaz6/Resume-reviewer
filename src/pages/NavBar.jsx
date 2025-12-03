@@ -1,14 +1,16 @@
 // NAVBAR - Modern & Beautiful Desktop Design
 // Sleek navigation with hover effects and modern styling
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, userProfile } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const menuRef = useRef(null);
   
   const isActive = (path) => {
     return location.pathname === path;
@@ -18,10 +20,28 @@ const Navbar = () => {
     try {
       await logout();
       navigate('/');
+      setShowUserMenu(false);
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserMenu]);
 
   return (
     <nav style={{
@@ -225,44 +245,167 @@ const Navbar = () => {
               >
                 Analytics
               </Link>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                marginLeft: "12px",
-                paddingLeft: "12px",
-                borderLeft: "1px solid #e5e7eb"
-              }}>
-                <span style={{
-                  fontSize: "0.9rem",
-                  color: "#64748b"
-                }}>
-                  {currentUser.displayName || currentUser.email}
-                </span>
+              <div style={{ position: "relative", marginLeft: "12px", paddingLeft: "12px", borderLeft: "1px solid #e5e7eb" }} ref={menuRef}>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => setShowUserMenu(!showUserMenu)}
                   style={{
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    color: "#dc2626",
-                    background: "transparent",
-                    border: "1px solid #dc2626",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
                     padding: "8px 16px",
-                    borderRadius: "6px",
+                    backgroundColor: showUserMenu ? "#f8fafc" : "transparent",
+                    border: "2px solid",
+                    borderColor: showUserMenu ? "#3b82f6" : "#e5e7eb",
+                    borderRadius: "10px",
                     cursor: "pointer",
                     transition: "all 0.2s ease"
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.background = "#dc2626";
-                    e.target.style.color = "#ffffff";
+                    if (!showUserMenu) {
+                      e.currentTarget.style.borderColor = "#3b82f6";
+                      e.currentTarget.style.backgroundColor = "#f8fafc";
+                    }
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.background = "transparent";
-                    e.target.style.color = "#dc2626";
+                    if (!showUserMenu) {
+                      e.currentTarget.style.borderColor = "#e5e7eb";
+                      e.currentTarget.style.backgroundColor = "transparent";
+                    }
                   }}
                 >
-                  Logout
+                  <div style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    backgroundColor: "#3b82f6",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#ffffff",
+                    fontWeight: "700",
+                    fontSize: "0.9rem"
+                  }}>
+                    {(currentUser.displayName || currentUser.email || "U")[0].toUpperCase()}
+                  </div>
+                  <span style={{
+                    fontSize: "0.95rem",
+                    fontWeight: "600",
+                    color: "#0f172a"
+                  }}>
+                    {currentUser.displayName || userProfile?.displayName || currentUser.email?.split("@")[0]}
+                  </span>
+                  <span style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                    {showUserMenu ? "▲" : "▼"}
+                  </span>
                 </button>
+                
+                {showUserMenu && (
+                  <div style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: 0,
+                    marginTop: "8px",
+                    backgroundColor: "#ffffff",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "12px",
+                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+                    minWidth: "220px",
+                    zIndex: 1000,
+                    overflow: "hidden"
+                  }}>
+                    <div style={{
+                      padding: "16px",
+                      borderBottom: "1px solid #e5e7eb",
+                      backgroundColor: "#f8fafc"
+                    }}>
+                      <div style={{
+                        fontSize: "0.9rem",
+                        fontWeight: "700",
+                        color: "#0f172a",
+                        marginBottom: "4px"
+                      }}>
+                        {currentUser.displayName || userProfile?.displayName || "User"}
+                      </div>
+                      <div style={{
+                        fontSize: "0.85rem",
+                        color: "#64748b"
+                      }}>
+                        {currentUser.email}
+                      </div>
+                    </div>
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setShowUserMenu(false)}
+                      style={{
+                        display: "block",
+                        padding: "12px 16px",
+                        color: "#0f172a",
+                        textDecoration: "none",
+                        fontSize: "0.95rem",
+                        fontWeight: "500",
+                        transition: "all 0.2s ease",
+                        borderBottom: "1px solid #f1f5f9"
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.backgroundColor = "#f8fafc";
+                        e.currentTarget.style.color = "#3b82f6";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = "#0f172a";
+                      }}
+                    >
+                      📊 My Dashboard
+                    </Link>
+                    <Link
+                      to="/analytics"
+                      onClick={() => setShowUserMenu(false)}
+                      style={{
+                        display: "block",
+                        padding: "12px 16px",
+                        color: "#0f172a",
+                        textDecoration: "none",
+                        fontSize: "0.95rem",
+                        fontWeight: "500",
+                        transition: "all 0.2s ease",
+                        borderBottom: "1px solid #f1f5f9"
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.backgroundColor = "#f8fafc";
+                        e.currentTarget.style.color = "#3b82f6";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = "#0f172a";
+                      }}
+                    >
+                      📈 Analytics
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        backgroundColor: "transparent",
+                        color: "#dc2626",
+                        border: "none",
+                        textAlign: "left",
+                        fontSize: "0.95rem",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease"
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.backgroundColor = "#fef2f2";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                      }}
+                    >
+                      🚪 Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (

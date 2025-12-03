@@ -1,13 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useResume } from '../contexts/ResumeContext';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { db } from '../config/firebase';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format, subDays, startOfWeek, endOfWeek } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 const Analytics = () => {
-  const { userProfile } = useAuth();
+  const { currentUser } = useAuth();
   const { resumes } = useResume();
-  const [timeRange, setTimeRange] = useState('7d');
+  const [analyses, setAnalyses] = useState([]);
+
+  useEffect(() => {
+    const loadAnalyses = async () => {
+      if (!currentUser) {
+        return;
+      }
+      try {
+        const analysesQuery = query(
+          collection(db, "resumeAnalyses"),
+          where("userId", "==", currentUser.uid),
+          orderBy("createdAt", "desc")
+        );
+        const analysesSnapshot = await getDocs(analysesQuery);
+        const analysesData = analysesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setAnalyses(analysesData);
+      } catch (error) {
+        console.error("Error loading analyses:", error);
+      }
+    };
+    loadAnalyses();
+  }, [currentUser]);
 
   // Calculate analytics data
   const analyticsData = {
@@ -15,8 +41,12 @@ const Analytics = () => {
     totalExports: resumes.reduce((sum, r) => sum + (r.analytics?.exports || 0), 0),
     totalViews: resumes.reduce((sum, r) => sum + (r.analytics?.views || 0), 0),
     totalShares: resumes.reduce((sum, r) => sum + (r.analytics?.shares || 0), 0),
+    totalAnalyses: analyses.length,
     avgATSScore: resumes.length > 0 
       ? Math.round(resumes.reduce((sum, r) => sum + (r.atsScore || 0), 0) / resumes.length)
+      : 0,
+    avgAnalysisScore: analyses.length > 0
+      ? Math.round(analyses.reduce((sum, a) => sum + (a.totalScore || 0), 0) / analyses.length)
       : 0
   };
 
@@ -84,10 +114,12 @@ const Analytics = () => {
         }}>
           {[
             { label: 'Total Resumes', value: analyticsData.totalResumes, color: '#667eea' },
+            { label: 'Resume Analyses', value: analyticsData.totalAnalyses, color: '#10b981' },
             { label: 'Total Exports', value: analyticsData.totalExports, color: '#764ba2' },
             { label: 'Total Views', value: analyticsData.totalViews, color: '#f093fb' },
             { label: 'Total Shares', value: analyticsData.totalShares, color: '#4facfe' },
-            { label: 'Avg ATS Score', value: `${analyticsData.avgATSScore}%`, color: '#f5576c' }
+            { label: 'Avg ATS Score', value: `${analyticsData.avgATSScore}%`, color: '#f5576c' },
+            { label: 'Avg Analysis Score', value: analyticsData.avgAnalysisScore > 0 ? `${analyticsData.avgAnalysisScore}%` : 'N/A', color: '#f59e0b' }
           ].map((stat, index) => (
             <div
               key={index}
@@ -271,6 +303,68 @@ const Analytics = () => {
             </div>
           )}
         </div>
+
+        {/* Recent Analyses */}
+        {analyses.length > 0 && (
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '12px',
+            padding: '24px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            marginBottom: '20px'
+          }}>
+            <h3 style={{
+              fontSize: '1.25rem',
+              fontWeight: '700',
+              marginBottom: '20px',
+              color: '#1a1a1a'
+            }}>
+              Recent Resume Analyses
+            </h3>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+                    <th style={{ padding: '12px', textAlign: 'left', color: '#64748b', fontWeight: '600' }}>File Name</th>
+                    <th style={{ padding: '12px', textAlign: 'left', color: '#64748b', fontWeight: '600' }}>Score</th>
+                    <th style={{ padding: '12px', textAlign: 'left', color: '#64748b', fontWeight: '600' }}>AI Model</th>
+                    <th style={{ padding: '12px', textAlign: 'left', color: '#64748b', fontWeight: '600' }}>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {analyses.slice(0, 10).map((analysis) => (
+                    <tr key={analysis.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                      <td style={{ padding: '12px', color: '#1a1a1a' }}>
+                        {analysis.fileName || 'Resume Analysis'}
+                      </td>
+                      <td style={{ padding: '12px', color: '#1a1a1a', fontWeight: '600' }}>
+                        <span style={{
+                          color: analysis.totalScore >= 90 ? '#10b981' : 
+                                 analysis.totalScore >= 80 ? '#3b82f6' : 
+                                 analysis.totalScore >= 70 ? '#f59e0b' : '#ef4444'
+                        }}>
+                          {analysis.totalScore || 0}%
+                        </span>
+                      </td>
+                      <td style={{ padding: '12px', color: '#64748b' }}>
+                        {analysis.aiModel || 'N/A'}
+                      </td>
+                      <td style={{ padding: '12px', color: '#64748b' }}>
+                        {analysis.createdAt ? 
+                          (analysis.createdAt.seconds ? 
+                            new Date(analysis.createdAt.seconds * 1000).toLocaleDateString() : 
+                            new Date(analysis.createdAt).toLocaleDateString()
+                          ) : 
+                          'N/A'
+                        }
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

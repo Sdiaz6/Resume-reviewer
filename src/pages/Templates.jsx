@@ -3,10 +3,18 @@ import { useNavigate } from "react-router-dom";
 import ClassicTemplate from "./Templates/ClassicTemplate";
 import ModernTemplate from "./Templates/ModernTemplate";
 import PremiumTemplate from "./Templates/PremiumTemplate";
+import ContemporaryTemplate from "./Templates/ContemporaryTemplate";
+import CurrentTemplate from "./Templates/CurrentTemplate";
+import InnovativeTemplate from "./Templates/InnovativeTemplate";
+import BasicTemplate from "./Templates/BasicTemplate";
+import PolishedTemplate from "./Templates/PolishedTemplate";
 
 const Templates = () => {
   const navigate = useNavigate();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [selectedStyle, setSelectedStyle] = useState("All");
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [showStyleDropdown, setShowStyleDropdown] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,67 +24,111 @@ const Templates = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Responsive padding - minimal on sides, more on top/bottom
-  const getPadding = () => {
-    if (windowWidth < 768) return "60px 16px"; // Mobile: minimal side padding
-    if (windowWidth < 1024) return "80px 24px"; // Tablet: minimal side padding
-    if (windowWidth < 1440) return "100px 32px"; // Desktop: minimal side padding
-    return "120px 40px"; // Large Desktop: minimal side padding
-  };
+  const colors = [
+    { name: "Grey", value: "#6b7280" },
+    { name: "Black", value: "#1f2937" },
+    { name: "Blue", value: "#3b82f6" },
+    { name: "Green", value: "#10b981" },
+    { name: "Yellow", value: "#f59e0b" },
+    { name: "Red", value: "#ef4444" },
+    { name: "Purple", value: "#8b5cf6" }
+  ];
 
-  // Responsive header padding
-  const getHeaderPadding = () => {
-    if (windowWidth < 768) return "0 0 40px 0";
-    if (windowWidth < 1024) return "0 0 50px 0";
-    return "0 0 64px 0";
-  };
+  const styles = ["All", "Professional", "Creative", "Modern", "Classic", "Minimalist"];
 
-  // Responsive grid columns - use more of the screen
-  const getGridColumns = () => {
-    if (windowWidth < 768) return "1fr"; // Mobile: single column
-    if (windowWidth < 1024) return "repeat(2, 1fr)"; // Tablet: 2 columns
-    if (windowWidth < 1920) return "repeat(3, 1fr)"; // Desktop: 3 columns
-    return "repeat(4, 1fr)"; // Very large screens: 4 columns
-  };
-
-  // Responsive font sizes
-  const getTitleSize = () => {
-    if (windowWidth < 768) return "2rem";
-    if (windowWidth < 1024) return "2.5rem";
-    if (windowWidth < 1440) return "3rem";
-    return "3.5rem";
-  };
-
-  // Responsive gap between cards
-  const getGap = () => {
-    if (windowWidth < 768) return "20px";
-    if (windowWidth < 1024) return "24px";
-    return "32px";
-  };
-
-  const templates = [
+  const allTemplates = [
+    {
+      id: "contemporary",
+      name: "Contemporary",
+      description: "Perfect for management or business roles needing a polished format",
+      component: ContemporaryTemplate,
+      category: "Professional",
+      premium: false,
+      defaultColor: "#10b981"
+    },
+    {
+      id: "current",
+      name: "Current",
+      description: "Ideal for fast-paced industries like tech or product management",
+      component: CurrentTemplate,
+      category: "Modern",
+      premium: false,
+      defaultColor: "#2563eb"
+    },
+    {
+      id: "innovative",
+      name: "Innovative",
+      description: "For artists or creatives wanting a visually engaging resume",
+      component: InnovativeTemplate,
+      category: "Creative",
+      premium: false,
+      defaultColor: "#10b981"
+    },
+    {
+      id: "basic",
+      name: "Basic",
+      description: "For senior professionals highlighting career achievements",
+      component: BasicTemplate,
+      category: "Classic",
+      premium: false,
+      defaultColor: "#3b82f6"
+    },
+    {
+      id: "polished",
+      name: "Polished",
+      description: "For entry-level roles where clarity and simplicity are key",
+      component: PolishedTemplate,
+      category: "Minimalist",
+      premium: false,
+      defaultColor: "#3b82f6"
+    },
     {
       id: "classic",
       name: "Classic",
       description: "Traditional and professional layout perfect for any industry",
       component: ClassicTemplate,
-      premium: false
+      category: "Classic",
+      premium: false,
+      defaultColor: "#1f2937"
     },
     {
       id: "modern",
       name: "Modern",
       description: "Clean and contemporary design with modern typography",
       component: ModernTemplate,
-      premium: false
+      category: "Modern",
+      premium: false,
+      defaultColor: "#3b82f6"
     },
     {
       id: "premium",
       name: "Premium",
       description: "Elegant design with enhanced visual appeal",
       component: PremiumTemplate,
-      premium: true
+      category: "Professional",
+      premium: true,
+      defaultColor: "#f59e0b"
     }
   ];
+
+  const filteredTemplates = allTemplates.filter(template => {
+    const styleMatch = selectedStyle === "All" || template.category === selectedStyle;
+    return styleMatch;
+  });
+
+  const getPadding = () => {
+    if (windowWidth < 768) return "40px 16px";
+    if (windowWidth < 1024) return "60px 24px";
+    if (windowWidth < 1440) return "80px 32px";
+    return "100px 40px";
+  };
+
+  const getGridColumns = () => {
+    if (windowWidth < 768) return "1fr";
+    if (windowWidth < 1024) return "repeat(2, 1fr)";
+    if (windowWidth < 1920) return "repeat(3, 1fr)";
+    return "repeat(4, 1fr)";
+  };
 
   return (
     <div style={{ 
@@ -84,29 +136,11 @@ const Templates = () => {
       width: "100vw",
       maxWidth: "100vw",
       overflowX: "hidden",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)",
+      backgroundColor: "#f8fafc",
       position: "relative",
       margin: 0,
       padding: 0
     }}>
-      {/* Animated background overlay */}
-      <div style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100%",
-        height: "100%",
-        background: `
-          linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 25%, transparent 50%, rgba(255, 255, 255, 0.1) 75%, transparent 100%),
-          linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%)
-        `,
-        backgroundSize: "200px 200px, 100% 100%",
-        animation: "float 8s ease-in-out infinite"
-      }}></div>
-
-      {/* FULL WIDTH CONTENT - No side constraints */}
       <div style={{ 
         width: "100%",
         maxWidth: "100%",
@@ -116,264 +150,323 @@ const Templates = () => {
         zIndex: 1,
         boxSizing: "border-box"
       }}>
+        {/* Header */}
         <header style={{ 
           textAlign: "center", 
-          padding: getHeaderPadding(),
+          padding: windowWidth < 768 ? "40px 0" : "60px 0",
           width: "100%",
           boxSizing: "border-box"
         }}>
-          <div style={{
-            display: "inline-block",
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
-            backdropFilter: "blur(10px)",
-            color: "#ffffff",
-            padding: "8px 20px",
-            borderRadius: "20px",
-            fontSize: windowWidth < 768 ? "0.8rem" : "0.9rem",
-            fontWeight: "600",
-            marginBottom: "20px",
-            border: "1px solid rgba(255, 255, 255, 0.3)"
-          }}>
-            ✨ Professional Templates
-          </div>
           <h1 style={{
-            fontSize: getTitleSize(),
+            fontSize: windowWidth < 768 ? "2rem" : windowWidth < 1024 ? "2.5rem" : "3rem",
             fontWeight: "800",
-            color: "#ffffff",
-            marginBottom: "20px",
-            letterSpacing: "-1px",
-            textShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
-            width: "100%"
+            color: "#0f172a",
+            marginBottom: "16px",
+            letterSpacing: "-1px"
           }}>
-            Choose Your Template
+            Resume Templates
           </h1>
           <p style={{
-            fontSize: windowWidth < 768 ? "1rem" : "1.2rem",
-            color: "rgba(255, 255, 255, 0.9)",
-            maxWidth: "800px",
-            margin: "0 auto",
-            textShadow: "0 2px 10px rgba(0, 0, 0, 0.2)"
+            fontSize: windowWidth < 768 ? "1rem" : "1.1rem",
+            color: "#64748b",
+            maxWidth: "700px",
+            margin: "0 auto"
           }}>
-            Select a professional resume template that matches your style and industry
+            Choose from professional resume templates designed for every industry
           </p>
         </header>
 
-        {/* FULL WIDTH GRID - Uses entire screen */}
+        {/* Filters Section */}
+        <div style={{
+          display: "flex",
+          flexDirection: windowWidth < 768 ? "column" : "row",
+          gap: "24px",
+          marginBottom: "40px",
+          alignItems: windowWidth < 768 ? "stretch" : "center",
+          justifyContent: "space-between",
+          padding: windowWidth < 768 ? "0" : "0 20px"
+        }}>
+          {/* Style Filter */}
+          <div style={{ position: "relative", flex: windowWidth < 768 ? "1" : "0 0 auto" }}>
+            <div
+              onClick={() => setShowStyleDropdown(!showStyleDropdown)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "12px 20px",
+                backgroundColor: "#ffffff",
+                border: "2px solid #e5e7eb",
+                borderRadius: "12px",
+                cursor: "pointer",
+                minWidth: windowWidth < 768 ? "100%" : "200px",
+                transition: "all 0.2s ease"
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = "#3b82f6";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = "#e5e7eb";
+              }}
+            >
+              <span style={{ fontSize: "1rem", fontWeight: "600", color: "#0f172a" }}>
+                Style: {selectedStyle}
+              </span>
+              <span style={{ fontSize: "1.2rem", color: "#64748b" }}>
+                {showStyleDropdown ? "▲" : "▼"}
+              </span>
+            </div>
+            {showStyleDropdown && (
+              <div style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                right: 0,
+                marginTop: "8px",
+                backgroundColor: "#ffffff",
+                border: "2px solid #e5e7eb",
+                borderRadius: "12px",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+                zIndex: 100,
+                overflow: "hidden"
+              }}>
+                {styles.map((style) => (
+                  <div
+                    key={style}
+                    onClick={() => {
+                      setSelectedStyle(style);
+                      setShowStyleDropdown(false);
+                    }}
+                    style={{
+                      padding: "12px 20px",
+                      cursor: "pointer",
+                      backgroundColor: selectedStyle === style ? "#eff6ff" : "#ffffff",
+                      color: selectedStyle === style ? "#3b82f6" : "#0f172a",
+                      fontWeight: selectedStyle === style ? "600" : "500",
+                      transition: "all 0.2s ease"
+                    }}
+                    onMouseOver={(e) => {
+                      if (selectedStyle !== style) {
+                        e.currentTarget.style.backgroundColor = "#f8fafc";
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (selectedStyle !== style) {
+                        e.currentTarget.style.backgroundColor = "#ffffff";
+                      }
+                    }}
+                  >
+                    {style}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Color Options */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+            flex: windowWidth < 768 ? "1" : "0 0 auto"
+          }}>
+            <span style={{ fontSize: "1rem", fontWeight: "600", color: "#0f172a", whiteSpace: "nowrap" }}>
+              Colors:
+            </span>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              {colors.map((color) => (
+                <button
+                  key={color.value}
+                  onClick={() => setSelectedColor(selectedColor === color.value ? null : color.value)}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "8px",
+                    backgroundColor: color.value,
+                    border: selectedColor === color.value ? "3px solid #3b82f6" : "2px solid #e5e7eb",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    boxShadow: selectedColor === color.value ? "0 4px 12px rgba(59, 130, 246, 0.3)" : "none"
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.transform = "scale(1.1)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    if (selectedColor !== color.value) {
+                      e.currentTarget.style.boxShadow = "none";
+                    }
+                  }}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Templates Grid */}
         <div style={{
           display: "grid",
           gridTemplateColumns: getGridColumns(),
-          gap: getGap(),
-          marginBottom: windowWidth < 768 ? "32px" : "48px",
+          gap: windowWidth < 768 ? "24px" : "32px",
+          marginBottom: "60px",
           width: "100%",
           maxWidth: "100%",
           boxSizing: "border-box",
           padding: windowWidth < 768 ? "0" : "0 20px"
         }}>
-          {templates.map((template) => (
-            <div
-              key={template.id}
-              style={{
-                background: "rgba(255, 255, 255, 0.95)",
-                backdropFilter: "blur(20px)",
-                borderRadius: "20px",
-                padding: windowWidth < 768 ? "20px" : "28px",
-                border: "2px solid rgba(255, 255, 255, 0.3)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
-                width: "100%",
-                boxSizing: "border-box",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%"
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-8px)";
-                e.currentTarget.style.boxShadow = "0 16px 32px rgba(0, 0, 0, 0.2)";
-                e.currentTarget.style.borderColor = "#3b82f6";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.15)";
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
-              }}
-            >
-              {/* Template Preview Container */}
-              <div style={{
-                background: template.premium ? "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)" : "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-                borderRadius: "12px",
-                padding: windowWidth < 768 ? "12px" : "16px",
-                marginBottom: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                minHeight: windowWidth < 768 ? "200px" : "240px",
-                maxHeight: windowWidth < 768 ? "250px" : "280px",
-                overflow: "hidden",
-                position: "relative"
-              }}>
-                <div style={{
+          {filteredTemplates.map((template) => {
+            const templateColor = selectedColor || template.defaultColor;
+            return (
+              <div
+                key={template.id}
+                style={{
                   background: "#ffffff",
-                  borderRadius: "8px",
-                  padding: windowWidth < 768 ? "8px" : "12px",
+                  borderRadius: "16px",
+                  padding: windowWidth < 768 ? "20px" : "24px",
+                  border: "2px solid #e5e7eb",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
                   width: "100%",
-                  maxWidth: windowWidth < 768 ? "180px" : "220px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
                   boxSizing: "border-box",
-                  transform: "scale(0.85)",
-                  transformOrigin: "top center"
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%"
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.12)";
+                  e.currentTarget.style.borderColor = templateColor;
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.08)";
+                  e.currentTarget.style.borderColor = "#e5e7eb";
+                }}
+              >
+                {/* Template Preview */}
+                <div style={{
+                  backgroundColor: "#f8fafc",
+                  borderRadius: "12px",
+                  padding: windowWidth < 768 ? "12px" : "16px",
+                  marginBottom: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  minHeight: windowWidth < 768 ? "220px" : "260px",
+                  maxHeight: windowWidth < 768 ? "240px" : "280px",
+                  overflow: "hidden",
+                  position: "relative"
                 }}>
-                  <template.component
-                    basicInfo={{ name: "John Doe", email: "john@example.com" }}
-                    summary="Professional summary example"
-                    experience={[{ company: "Company", role: "Role", start: "2020", end: "2023", description: "Description" }]}
-                    education={[{ school: "University", degree: "Degree", start: "2016", end: "2020" }]}
-                    skills={["Skill 1", "Skill 2", "Skill 3"]}
-                  />
-                </div>
-              </div>
-
-              {/* Template Info */}
-              <div style={{ 
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between"
-              }}>
-                <div>
                   <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginBottom: "12px"
+                    background: "#ffffff",
+                    borderRadius: "8px",
+                    padding: windowWidth < 768 ? "8px" : "12px",
+                    width: "100%",
+                    maxWidth: windowWidth < 768 ? "180px" : "220px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    boxSizing: "border-box",
+                    transform: "scale(0.85)",
+                    transformOrigin: "top center"
                   }}>
-                    <h3 style={{
-                      fontSize: windowWidth < 768 ? "1.25rem" : "1.5rem",
-                      fontWeight: "700",
-                      color: "#0f172a",
-                      margin: 0
-                    }}>
-                      {template.name}
-                    </h3>
-                    {template.premium && (
-                      <span style={{
-                        fontSize: "0.75rem",
-                        color: "#f59e0b",
-                        fontWeight: "700",
-                        background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-                        padding: "4px 10px",
-                        borderRadius: "12px",
-                        border: "1px solid #f59e0b"
-                      }}>
-                        ★ Premium
-                      </span>
-                    )}
+                    <template.component
+                      basicInfo={{ name: "John Doe", email: "john@example.com" }}
+                      summary="Professional summary example"
+                      experience={[{ company: "Company", role: "Role", start: "2020", end: "2023", description: "Description" }]}
+                      education={[{ school: "University", degree: "Degree", start: "2016", end: "2020" }]}
+                      skills={["Skill 1", "Skill 2", "Skill 3"]}
+                      color={templateColor}
+                    />
                   </div>
-                  <p style={{
-                    fontSize: windowWidth < 768 ? "0.875rem" : "0.95rem",
-                    color: "#64748b",
-                    margin: 0,
-                    lineHeight: "1.5",
-                    marginBottom: "20px"
-                  }}>
-                    {template.description}
-                  </p>
                 </div>
 
-                {/* Action Button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/build-resume", { state: { template: template.id } });
-                  }}
-                  style={{
-                    width: "100%",
-                    padding: windowWidth < 768 ? "12px 20px" : "14px 24px",
-                    backgroundColor: template.premium ? "#f59e0b" : "#3b82f6",
-                    color: "#ffffff",
-                    border: "none",
-                    borderRadius: "10px",
-                    fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    boxSizing: "border-box",
-                    marginTop: "auto"
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.backgroundColor = template.premium ? "#d97706" : "#2563eb";
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.backgroundColor = template.premium ? "#f59e0b" : "#3b82f6";
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "none";
-                  }}
-                >
-                  {template.premium ? "Unlock Premium" : "Use Template"}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+                {/* Template Info */}
+                <div style={{ 
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}>
+                  <div>
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginBottom: "12px"
+                    }}>
+                      <h3 style={{
+                        fontSize: windowWidth < 768 ? "1.2rem" : "1.4rem",
+                        fontWeight: "700",
+                        color: "#0f172a",
+                        margin: 0
+                      }}>
+                        {template.name}
+                      </h3>
+                      {template.premium && (
+                        <span style={{
+                          fontSize: "0.75rem",
+                          color: "#f59e0b",
+                          fontWeight: "700",
+                          background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+                          padding: "4px 10px",
+                          borderRadius: "12px"
+                        }}>
+                          ★ Premium
+                        </span>
+                      )}
+                    </div>
+                    <p style={{
+                      fontSize: windowWidth < 768 ? "0.875rem" : "0.95rem",
+                      color: "#64748b",
+                      margin: 0,
+                      lineHeight: "1.5",
+                      marginBottom: "20px"
+                    }}>
+                      {template.description}
+                    </p>
+                  </div>
 
-        {/* FULL WIDTH CTA SECTION */}
-        <div style={{
-          textAlign: "center",
-          padding: windowWidth < 768 ? "32px 24px" : "48px",
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(20px)",
-          borderRadius: "16px",
-          border: "2px solid rgba(255, 255, 255, 0.3)",
-          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
-          width: "100%",
-          maxWidth: "100%",
-          boxSizing: "border-box"
-        }}>
-          <h2 style={{
-            fontSize: windowWidth < 768 ? "1.5rem" : "2rem",
-            fontWeight: "700",
-            color: "#0f172a",
-            marginBottom: "16px"
-          }}>
-            Ready to Build Your Resume?
-          </h2>
-          <p style={{
-            fontSize: windowWidth < 768 ? "1rem" : "1.1rem",
-            color: "#64748b",
-            marginBottom: "32px"
-          }}>
-            Start building your professional resume with our easy-to-use builder
-          </p>
-          <button
-            onClick={() => navigate("/build-resume")}
-            style={{
-              padding: windowWidth < 768 ? "14px 32px" : "16px 40px",
-              backgroundColor: "#10b981",
-              color: "#ffffff",
-              border: "none",
-              borderRadius: "12px",
-              fontSize: windowWidth < 768 ? "1rem" : "1.1rem",
-              fontWeight: "600",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)"
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "#059669";
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = "0 6px 16px rgba(16, 185, 129, 0.4)";
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = "#10b981";
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.3)";
-            }}
-          >
-            Start Building →
-          </button>
+                  {/* Action Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate("/build-resume", { state: { template: template.id, color: templateColor } });
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: windowWidth < 768 ? "12px 20px" : "14px 24px",
+                      backgroundColor: templateColor,
+                      color: "#ffffff",
+                      border: "none",
+                      borderRadius: "10px",
+                      fontSize: windowWidth < 768 ? "0.9rem" : "1rem",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      boxSizing: "border-box",
+                      marginTop: "auto"
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.opacity = "0.9";
+                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.opacity = "1";
+                      e.target.style.transform = "translateY(0)";
+                      e.target.style.boxShadow = "none";
+                    }}
+                  >
+                    {template.premium ? "Unlock Premium" : "Use This Template"}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
